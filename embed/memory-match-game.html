@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+  <title>Memory Match</title><link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/share.js"></script></head>
+<body class="embed-game">
+<h2>🃏 Memory Match</h2>
+<p class="embed-subtitle">Flip cards to find matching emoji pairs. Test your memory!</p>
+<div class="memory-grid" id="gameBoard"></div>
+<div>
+  <button id="newGameBtn" class="embed-btn embed-btn-large">🔄 New Game</button>
+</div>
+<div class="embed-feedback" id="feedback">Moves: 0 | Pairs found: 0 / 4</div>
+<script>(function(){"use strict";
+var emojis=["🐶","🐱","🦊","🐼","🐨","🐸","🦁","🐯"],board=document.getElementById("gameBoard"),f=document.getElementById("feedback"),cards=[],flipped=[],matched=[],moves=0,lock=false;
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function render(){board.textContent="";var pairs=shuffle(emojis.slice()).slice(0,4);cards=shuffle(pairs.concat(pairs));flipped=[];matched=[];moves=0;lock=false;cards.forEach(function(emoji,idx){var card=document.createElement("div");card.className="memory-card";card.textContent=emoji;card.setAttribute("data-idx",idx);card.addEventListener("click",function(){if(lock)return;if(flipped.length>=2)return;if(flipped.indexOf(idx)!==-1||matched.indexOf(idx)!==-1)return;card.classList.add("flipped");flipped.push(idx);if(flipped.length===2){moves++;lock=true;var a=flipped[0],b=flipped[1];if(cards[a]===cards[b]){matched.push(a,b);flipped=[];lock=false;var pairsFound=matched.length/2;f.textContent="Moves: "+moves+" | Pairs found: "+pairsFound+" / 4";if(pairsFound===4)f.textContent="🎉 You won in "+moves+" moves! Pairs found: 4 / 4";}else{setTimeout(function(){document.querySelectorAll(".memory-card.flipped:not(.matched)").forEach(function(c){c.classList.remove("flipped");});flipped=[];lock=false;f.textContent="Moves: "+moves+" | Pairs found: "+(matched.length/2)+" / 4";},800);}}else{f.textContent="Moves: "+moves+" | Pairs found: "+(matched.length/2)+" / 4";}});board.appendChild(card);});f.textContent="Moves: 0 | Pairs found: 0 / 4";}
+document.getElementById("newGameBtn").addEventListener("click",render);render();})();</script>
+
+  <!-- Gentle Share Panel -->
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy the current prompt or share a gentle note. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Prompt</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      // Gentle Share wiring for embed games
+      var statusEl = document.getElementById("embedShareStatus");
+      var copyPromptBtn = document.getElementById("sharePromptBtn");
+      var copyNoteBtn = document.getElementById("shareNoteBtn");
+      var responseEl = document.getElementById("embedResponse");
+      var clearBtn = document.getElementById("clearResponseBtn");
+
+      // Helper: find the main display/prompt element
+      function getPromptText() {
+        // Try common output/display element IDs
+        var ids = ["rqDisplay","wyrDisplay","totDisplay","emojiDisplay","display","question","prompt","soundDisplay","clueDisplay","qText"];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.textContent.trim()) {
+            var txt = el.textContent.trim();
+            // Skip placeholder texts
+            if (txt.indexOf("Click") === 0 || txt.indexOf("Loading") === 0 || txt === "Spin to get a question!") continue;
+            return txt;
+          }
+        }
+        // Try elements with class embed-output
+        var outputs = document.querySelectorAll(".embed-output");
+        for (var j = 0; j < outputs.length; j++) {
+          var ot = outputs[j].textContent.trim();
+          if (ot && ot.indexOf("Click") !== 0 && ot.indexOf("Loading") !== 0) return ot;
+        }
+        return "";
+      }
+
+      // Copy Prompt
+      if (copyPromptBtn) {
+        copyPromptBtn.addEventListener("click", function () {
+          var text = getPromptText();
+          if (!text) { if (statusEl) statusEl.textContent = "Generate a prompt first."; return; }
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(text, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Copy Gentle Share Note
+      if (copyNoteBtn) {
+        copyNoteBtn.addEventListener("click", function () {
+          var prompt = getPromptText();
+          var response = responseEl ? responseEl.value.trim() : "";
+          var title = document.title.replace(" — Game", "").replace(" — Free Online Icebreaker", "").trim();
+          var note = "I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n" + (prompt || "(a gentle moment)") + "\n";
+          if (response) { note += "\nMy pressure-free response:\n" + response + "\n"; }
+          note += "\nNot perfect. Just shared.\n\n" + window.location.href;
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(note, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Clear Response
+      if (clearBtn && responseEl) {
+        clearBtn.addEventListener("click", function () {
+          responseEl.value = "";
+          if (statusEl) statusEl.textContent = "Response cleared.";
+        });
+      }
+    })();
+  </script>
+  <script>
+    (function(){var s=document.getElementById("embedShareStatus"),nb=document.getElementById("shareNoteBtn");
+    if(nb)nb.addEventListener("click",function(){var note="I tried a low-pressure memory match game on Free Fun Icebreaker Games.\n\nNot perfect. Just shared.";if(typeof copyToClipboard==="function")copyToClipboard(note,s);});})();
+  </script>
+</body></html>

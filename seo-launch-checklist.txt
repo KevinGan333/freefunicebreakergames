@@ -1,0 +1,31 @@
+================================================================
+SEO Launch Checklist — Free Fun Icebreaker Games
+================================================================
+
+[ ] 1.  Every public page has one H1.
+[ ] 2.  Every public page has a unique title tag.
+[ ] 3.  Every public page has a unique meta description.
+[ ] 4.  Important pages have Open Graph tags (og:title, og:description, og:type).
+[ ] 5.  Important pages have og:image reference.
+[ ] 6.  Important pages have og:site_name set to "Free Fun Icebreaker Games".
+[ ] 7.  Game pages have FAQ sections with 4+ questions.
+[ ] 8.  FAQPage schema matches visible FAQ content.
+[ ] 9.  BreadcrumbList schema exists on game, category, and topic pages.
+[ ] 10. Visible breadcrumbs exist on game, category, and topic pages.
+[ ] 11. Sitemap includes all public pages (not embed, not 404).
+[ ] 12. Embed pages are not included in sitemap.
+[ ] 13. 404 page exists and links to recovery pages.
+[ ] 14. No /categories/games/ links exist anywhere.
+[ ] 15. No external scripts are loaded.
+[ ] 16. No ads are loaded.
+[ ] 17. No analytics are loaded.
+[ ] 18. No user data is stored.
+[ ] 19. No localStorage, sessionStorage, or cookies are used.
+[ ] 20. Mobile menu works correctly.
+[ ] 21. Theme toggle works in light and dark modes.
+[ ] 22. Back to Top button appears and works correctly.
+[ ] 23. All iframe sandbox attributes remain intact.
+[ ] 24. All internal links are root-relative.
+[ ] 25. No console errors on any page.
+[ ] 26. Site is NOT deployed until final approval.
+[ ] 27. Brand name is "Free Fun Icebreaker Games" everywhere.

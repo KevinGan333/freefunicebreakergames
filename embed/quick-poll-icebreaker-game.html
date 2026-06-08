@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+  <title>Quick Poll Icebreaker</title><link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/share.js"></script></head>
+<body class="embed-game">
+<h2>📊 Quick Poll Icebreaker</h2>
+<p class="embed-subtitle">Click an option to vote. Share your screen and have everyone participate!</p>
+<div class="embed-output" id="question" style="font-size:1.15rem;font-weight:600;margin-bottom:0.75rem;">Loading poll...</div>
+<div class="quiz-options" id="options"></div>
+<button id="nextBtn" class="embed-btn embed-btn-large" style="margin-top:1rem;">Next Poll ➡️</button>
+<div class="embed-feedback" id="feedback"></div>
+<script>(function(){"use strict";
+var polls=[{q:"What is the best work snack?",o:["Coffee","Fruit","Chips","Cookies"]},{q:"Meetings should be...",o:["Shorter","Less frequent","More structured","Replaced by email"]},{q:"Best background music for work?",o:["Lo-fi beats","Classical","Silence","Podcasts"]},{q:"What time do you feel most productive?",o:["Early morning","Late morning","Afternoon","Evening"]},{q:"Favorite way to start the day?",o:["Exercise","Reading","Coffee/tea","Diving into work"]},{q:"Best remote work perk?",o:["No commute","Flexible hours","Comfy clothes","Home-cooked lunch"]},{q:"Ideal team size?",o:["2-3 people","4-6 people","7-10 people","10+ people"]},{q:"Best meeting length?",o:["15 minutes","30 minutes","45 minutes","60 minutes"]},{q:"Favorite season?",o:["Spring","Summer","Fall","Winter"]},{q:"Pineapple on pizza?",o:["Yes, delicious!","No, never!","I will try it","No opinion"]}];
+var qEl=document.getElementById("question"),oEl=document.getElementById("options"),f=document.getElementById("feedback"),last=-1,c=0,selected=null;
+function showPoll(){var i;do{i=Math.floor(Math.random()*polls.length)}while(i===last&&polls.length>1);last=i;c++;var poll=polls[i];qEl.textContent=poll.q;oEl.textContent="";selected=null;poll.o.forEach(function(opt){var btn=document.createElement("button");btn.className="quiz-option";btn.textContent=opt;btn.addEventListener("click",function(){if(selected)return;selected=opt;oEl.querySelectorAll(".quiz-option").forEach(function(b){b.classList.remove("selected");});btn.classList.add("selected");f.textContent="You voted: "+opt+". In a group, have everyone vote and compare results!";});oEl.appendChild(btn);});f.textContent="Poll #"+c+" — click your choice!";}
+showPoll();
+document.getElementById("nextBtn").addEventListener("click",showPoll);})();</script>
+
+  <!-- Gentle Share Panel -->
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy the current prompt or share a gentle note. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Prompt</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      // Gentle Share wiring for embed games
+      var statusEl = document.getElementById("embedShareStatus");
+      var copyPromptBtn = document.getElementById("sharePromptBtn");
+      var copyNoteBtn = document.getElementById("shareNoteBtn");
+      var responseEl = document.getElementById("embedResponse");
+      var clearBtn = document.getElementById("clearResponseBtn");
+
+      // Helper: find the main display/prompt element
+      function getPromptText() {
+        // Try common output/display element IDs
+        var ids = ["rqDisplay","wyrDisplay","totDisplay","emojiDisplay","display","question","prompt","soundDisplay","clueDisplay","qText"];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.textContent.trim()) {
+            var txt = el.textContent.trim();
+            // Skip placeholder texts
+            if (txt.indexOf("Click") === 0 || txt.indexOf("Loading") === 0 || txt === "Spin to get a question!") continue;
+            return txt;
+          }
+        }
+        // Try elements with class embed-output
+        var outputs = document.querySelectorAll(".embed-output");
+        for (var j = 0; j < outputs.length; j++) {
+          var ot = outputs[j].textContent.trim();
+          if (ot && ot.indexOf("Click") !== 0 && ot.indexOf("Loading") !== 0) return ot;
+        }
+        return "";
+      }
+
+      // Copy Prompt
+      if (copyPromptBtn) {
+        copyPromptBtn.addEventListener("click", function () {
+          var text = getPromptText();
+          if (!text) { if (statusEl) statusEl.textContent = "Generate a prompt first."; return; }
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(text, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Copy Gentle Share Note
+      if (copyNoteBtn) {
+        copyNoteBtn.addEventListener("click", function () {
+          var prompt = getPromptText();
+          var response = responseEl ? responseEl.value.trim() : "";
+          var title = document.title.replace(" — Game", "").replace(" — Free Online Icebreaker", "").trim();
+          var note = "I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n" + (prompt || "(a gentle moment)") + "\n";
+          if (response) { note += "\nMy pressure-free response:\n" + response + "\n"; }
+          note += "\nNot perfect. Just shared.\n\n" + window.location.href;
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(note, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Clear Response
+      if (clearBtn && responseEl) {
+        clearBtn.addEventListener("click", function () {
+          responseEl.value = "";
+          if (statusEl) statusEl.textContent = "Response cleared.";
+        });
+      }
+    })();
+  </script>
+  <script>
+    (function(){var s=document.getElementById("embedShareStatus"),pb=document.getElementById("sharePromptBtn"),nb=document.getElementById("shareNoteBtn");
+    if(pb)pb.addEventListener("click",function(){var q=document.getElementById("question");if(!q||!q.textContent.trim()){if(s)s.textContent="No poll question to copy.";return;}if(typeof copyToClipboard==="function")copyToClipboard(q.textContent.trim(),s);});
+    if(nb)nb.addEventListener("click",function(){var q=document.getElementById("question");var qText=q?q.textContent.trim():"";var sel=document.querySelector(".quiz-option.selected");var choice=sel?sel.textContent.trim():"";var note="I tried a quick poll on Free Fun Icebreaker Games.\n\nPoll: "+qText;if(choice)note+="\nMy choice: "+choice;note+="\n\nNot perfect. Just shared.";if(typeof copyToClipboard==="function")copyToClipboard(note,s);});})();
+  </script>
+</body></html>

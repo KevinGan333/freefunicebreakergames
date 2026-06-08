@@ -1,0 +1,21 @@
+================================================================
+Accessibility Checklist — Free Fun Icebreaker Games
+================================================================
+
+[ ] 1.  All pages are keyboard navigable (Tab/Shift+Tab through all interactive elements).
+[ ] 2.  Menu button has aria-expanded and aria-controls attributes.
+[ ] 3.  Theme button has accessible aria-label ("Switch to dark mode" / "Switch to light mode").
+[ ] 4.  Back to Top button has aria-label="Back to top".
+[ ] 5.  Buttons use real <button> elements (not divs styled as buttons).
+[ ] 6.  Form inputs have associated <label> elements.
+[ ] 7.  Textareas have associated <label> elements.
+[ ] 8.  Status messages use aria-live="polite" where appropriate (Gentle Share, embed status).
+[ ] 9.  Focus states are visible on all interactive elements.
+[ ] 10. Links have descriptive text (not "click here" or bare URLs).
+[ ] 11. Color contrast is readable in light mode (body text meets WCAG AA).
+[ ] 12. Color contrast is readable in dark mode.
+[ ] 13. Mobile layout has no horizontal overflow at 375px width.
+[ ] 14. Iframe elements have title attributes.
+[ ] 15. SVG assets have suitable alt text or aria-hidden where decorative.
+[ ] 16. sr-only class available for screen-reader-only content.
+[ ] 17. No content relies solely on color to convey meaning.

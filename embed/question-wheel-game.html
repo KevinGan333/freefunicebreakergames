@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+  <title>Question Wheel</title><link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/share.js"></script></head>
+<body class="embed-game">
+<h2>🎡 Question Wheel</h2>
+<p class="embed-subtitle">Spin the wheel to land on a random icebreaker question!</p>
+<div class="wheel-display" id="wheel">🎡</div>
+<button id="spinBtn" class="embed-btn embed-btn-large">🎡 Spin the Wheel</button>
+<div class="embed-output" id="question" style="font-size:1.2rem;font-weight:600;min-height:3rem;">Spin to get a question!</div>
+<div class="embed-feedback" id="feedback"></div>
+<script>(function(){"use strict";
+var questions=["What is your dream travel destination?","What skill do you want to learn?","What is the best gift you have received?","What is your favorite childhood memory?","If you could have any job for a day, what would it be?","What is your go-to karaoke song?","If you could meet any historical figure, who?","What always makes you laugh?","What is your favorite way to spend a weekend?","What would your superpower be?","What book changed your perspective?","What is your favorite family tradition?","If you could live anywhere, where?","What is one thing on your bucket list?","What is the best advice you have received?","What is your favorite season and why?","If you wrote a book, what would the title be?","What are you most proud of?","What is your favorite comfort food?","If you could time travel, where to?"];
+var wheel=document.getElementById("wheel"),qEl=document.getElementById("question"),f=document.getElementById("feedback"),spinning=false,last=-1,c=0;
+document.getElementById("spinBtn").addEventListener("click",function(){if(spinning)return;spinning=true;wheel.classList.add("spinning");var idx;do{idx=Math.floor(Math.random()*questions.length)}while(idx===last&&questions.length>1);last=idx;c++;f.textContent="Spinning...";setTimeout(function(){wheel.classList.remove("spinning");qEl.textContent=questions[idx];qEl.classList.add("output-active");f.textContent="Spin #"+c+" — your question!";spinning=false;},1500);});})();</script>
+
+  <!-- Gentle Share Panel -->
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy the current prompt or share a gentle note. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Prompt</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      // Gentle Share wiring for embed games
+      var statusEl = document.getElementById("embedShareStatus");
+      var copyPromptBtn = document.getElementById("sharePromptBtn");
+      var copyNoteBtn = document.getElementById("shareNoteBtn");
+      var responseEl = document.getElementById("embedResponse");
+      var clearBtn = document.getElementById("clearResponseBtn");
+
+      // Helper: find the main display/prompt element
+      function getPromptText() {
+        // Try common output/display element IDs
+        var ids = ["rqDisplay","wyrDisplay","totDisplay","emojiDisplay","display","question","prompt","soundDisplay","clueDisplay","qText"];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.textContent.trim()) {
+            var txt = el.textContent.trim();
+            // Skip placeholder texts
+            if (txt.indexOf("Click") === 0 || txt.indexOf("Loading") === 0 || txt === "Spin to get a question!") continue;
+            return txt;
+          }
+        }
+        // Try elements with class embed-output
+        var outputs = document.querySelectorAll(".embed-output");
+        for (var j = 0; j < outputs.length; j++) {
+          var ot = outputs[j].textContent.trim();
+          if (ot && ot.indexOf("Click") !== 0 && ot.indexOf("Loading") !== 0) return ot;
+        }
+        return "";
+      }
+
+      // Copy Prompt
+      if (copyPromptBtn) {
+        copyPromptBtn.addEventListener("click", function () {
+          var text = getPromptText();
+          if (!text) { if (statusEl) statusEl.textContent = "Generate a prompt first."; return; }
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(text, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Copy Gentle Share Note
+      if (copyNoteBtn) {
+        copyNoteBtn.addEventListener("click", function () {
+          var prompt = getPromptText();
+          var response = responseEl ? responseEl.value.trim() : "";
+          var title = document.title.replace(" — Game", "").replace(" — Free Online Icebreaker", "").trim();
+          var note = "I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n" + (prompt || "(a gentle moment)") + "\n";
+          if (response) { note += "\nMy pressure-free response:\n" + response + "\n"; }
+          note += "\nNot perfect. Just shared.\n\n" + window.location.href;
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(note, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Clear Response
+      if (clearBtn && responseEl) {
+        clearBtn.addEventListener("click", function () {
+          responseEl.value = "";
+          if (statusEl) statusEl.textContent = "Response cleared.";
+        });
+      }
+    })();
+  </script>
+</body></html>

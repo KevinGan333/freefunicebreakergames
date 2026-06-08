@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, follow">
+  <title>Emoji Guessing Game</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/share.js"></script>
+</head>
+<body class="embed-game">
+  <h2>😎 Emoji Guessing Game</h2>
+  <p class="embed-subtitle">Look at the emojis and try to guess the phrase, movie, or song. Click "Reveal Answer" to check your guess!</p>
+
+  <div class="emoji-display" id="emojiDisplay">🎬🎭</div>
+
+  <div class="answer-reveal" id="emojiAnswer"></div>
+
+  <div>
+    <button id="emojiRevealBtn" class="embed-btn">👀 Reveal Answer</button>
+    <button id="emojiNextBtn" class="embed-btn embed-btn-secondary">Next Puzzle ➡️</button>
+  </div>
+  <div class="embed-feedback" id="emojiFeedback"></div>
+
+  <script>
+    (function () {
+      "use strict";
+      var prompts = [
+        { emoji: "🎬🎭", answer: "Movie / Drama" },
+        { emoji: "🌧️🐱🐶", answer: "Raining Cats and Dogs" },
+        { emoji: "🍎👑", answer: "Big Apple / New York" },
+        { emoji: "🔥🧊", answer: "Fire and Ice" },
+        { emoji: "🌙🚀", answer: "Fly Me to the Moon" },
+        { emoji: "🦁👑", answer: "The Lion King" },
+        { emoji: "❄️👸", answer: "Frozen / Snow Queen" },
+        { emoji: "🕷️🧑", answer: "Spider-Man" },
+        { emoji: "🌊🏄", answer: "Surfing / Catch a Wave" },
+        { emoji: "🎸🌟", answer: "Rock Star" }
+      ];
+
+      var emojiDisplay = document.getElementById("emojiDisplay");
+      var emojiAnswer = document.getElementById("emojiAnswer");
+      var revealBtn = document.getElementById("emojiRevealBtn");
+      var nextBtn = document.getElementById("emojiNextBtn");
+      var feedback = document.getElementById("emojiFeedback");
+      var currentIdx = -1;
+      var round = 0;
+
+      function showPrompt() {
+        var idx;
+        if (prompts.length === 1) {
+          idx = 0;
+        } else {
+          do {
+            idx = Math.floor(Math.random() * prompts.length);
+          } while (idx === currentIdx);
+        }
+        currentIdx = idx;
+        round++;
+
+        emojiDisplay.textContent = prompts[idx].emoji;
+        emojiAnswer.textContent = prompts[idx].answer;
+        emojiAnswer.classList.remove("visible");
+        feedback.textContent = "Puzzle #" + round + " — what do these emojis mean?";
+      }
+
+      revealBtn.addEventListener("click", function () {
+        emojiAnswer.classList.add("visible");
+        feedback.textContent = "Puzzle #" + round + " — answer revealed!";
+      });
+
+      nextBtn.addEventListener("click", showPrompt);
+
+      // Start with a puzzle ready (but answer hidden)
+      (function init() {
+        currentIdx = Math.floor(Math.random() * prompts.length);
+        emojiDisplay.textContent = prompts[currentIdx].emoji;
+        emojiAnswer.textContent = prompts[currentIdx].answer;
+        round = 1;
+        feedback.textContent = "Puzzle #1 — what do these emojis mean?";
+      })();
+    })();
+  </script>
+  <!-- Gentle Share Panel -->
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy the emoji puzzle or share a gentle note. The answer is only included if you choose to share after revealing it.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Emoji Puzzle</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      // Gentle Share wiring for embed games
+      var statusEl = document.getElementById("embedShareStatus");
+      var copyPromptBtn = document.getElementById("sharePromptBtn");
+      var copyNoteBtn = document.getElementById("shareNoteBtn");
+      var responseEl = document.getElementById("embedResponse");
+      var clearBtn = document.getElementById("clearResponseBtn");
+
+      // Helper: find the main display/prompt element
+      function getPromptText() {
+        // Try common output/display element IDs
+        var ids = ["rqDisplay","wyrDisplay","totDisplay","emojiDisplay","display","question","prompt","soundDisplay","clueDisplay","qText"];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.textContent.trim()) {
+            var txt = el.textContent.trim();
+            // Skip placeholder texts
+            if (txt.indexOf("Click") === 0 || txt.indexOf("Loading") === 0 || txt === "Spin to get a question!") continue;
+            return txt;
+          }
+        }
+        // Try elements with class embed-output
+        var outputs = document.querySelectorAll(".embed-output");
+        for (var j = 0; j < outputs.length; j++) {
+          var ot = outputs[j].textContent.trim();
+          if (ot && ot.indexOf("Click") !== 0 && ot.indexOf("Loading") !== 0) return ot;
+        }
+        return "";
+      }
+
+      // Copy Prompt
+      if (copyPromptBtn) {
+        copyPromptBtn.addEventListener("click", function () {
+          var text = getPromptText();
+          if (!text) { if (statusEl) statusEl.textContent = "Generate a prompt first."; return; }
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(text, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Copy Gentle Share Note
+      if (copyNoteBtn) {
+        copyNoteBtn.addEventListener("click", function () {
+          var prompt = getPromptText();
+          var response = responseEl ? responseEl.value.trim() : "";
+          var title = document.title.replace(" — Game", "").replace(" — Free Online Icebreaker", "").trim();
+          var note = "I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n" + (prompt || "(a gentle moment)") + "\n";
+          if (response) { note += "\nMy pressure-free response:\n" + response + "\n"; }
+          note += "\nNot perfect. Just shared.\n\n" + window.location.href;
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(note, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Clear Response
+      if (clearBtn && responseEl) {
+        clearBtn.addEventListener("click", function () {
+          responseEl.value = "";
+          if (statusEl) statusEl.textContent = "Response cleared.";
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

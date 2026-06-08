@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+  <title>Icebreaker Bingo</title><link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/share.js"></script></head>
+<body class="embed-game">
+<h2>🎯 Icebreaker Bingo</h2>
+<p class="embed-subtitle">Click squares to mark them. Find 5 in a row to win! Click "New Board" for fresh prompts.</p>
+<div class="bingo-board" id="bingoBoard"></div>
+<div style="margin-top:1rem;">
+  <button id="newBoardBtn" class="embed-btn embed-btn-large">🔄 New Board</button>
+</div>
+<div class="embed-feedback" id="bingoFeedback"></div>
+<script>
+(function(){"use strict";
+var prompts=["Has traveled to another country","Speaks more than one language","Has a pet","Plays a musical instrument","Has run a marathon","Loves spicy food","Has met a celebrity","Prefers morning over night","Has lived in multiple cities","Has a tattoo","Can cook a signature dish","Has broken a bone","Has gone camping","Loves roller coasters","Has a garden","Is left-handed","Has watched all of a TV series in one weekend","Has been on a boat","Likes pineapple on pizza","Has performed on stage","Has a collection of something","Drinks coffee every morning","Has climbed a mountain","Has done volunteer work","Has an unusual hobby","Wears glasses","Has been to a music festival","Can whistle a tune","Has ridden a horse","Owns more than 3 pairs of shoes"];
+var board=document.getElementById("bingoBoard"),feedback=document.getElementById("bingoFeedback"),marked=[];
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function render(){board.textContent="";marked=Array(25).fill(false);var cells=shuffle(prompts.slice()).slice(0,24);cells.splice(12,0,"⭐ FREE SPACE");for(var i=0;i<25;i++){var cell=document.createElement("div");cell.className="bingo-cell"+(i===12?" free":"");cell.textContent=cells[i];cell.setAttribute("data-idx",i);if(i===12){marked[i]=true;cell.classList.add("marked");}
+cell.addEventListener("click",function(){var idx=parseInt(this.getAttribute("data-idx"));if(idx===12)return;marked[idx]=!marked[idx];this.classList.toggle("marked");checkWin();});board.appendChild(cell);}feedback.textContent="Click squares to mark them. Find 5 in a row!";}
+function checkWin(){var wins=[[0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],[0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],[0,6,12,18,24],[4,8,12,16,20]];for(var w=0;w<wins.length;w++){if(wins[w].every(function(i){return marked[i];})){feedback.textContent="🎉 BINGO! You found 5 in a row! Great job!";return;}}feedback.textContent="Keep going! Find 5 in a row.";}
+document.getElementById("newBoardBtn").addEventListener("click",render);render();})();</script>
+
+  <!-- Gentle Share Panel -->
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy the current prompt or share a gentle note. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Prompt</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      // Gentle Share wiring for embed games
+      var statusEl = document.getElementById("embedShareStatus");
+      var copyPromptBtn = document.getElementById("sharePromptBtn");
+      var copyNoteBtn = document.getElementById("shareNoteBtn");
+      var responseEl = document.getElementById("embedResponse");
+      var clearBtn = document.getElementById("clearResponseBtn");
+
+      // Helper: find the main display/prompt element
+      function getPromptText() {
+        // Try common output/display element IDs
+        var ids = ["rqDisplay","wyrDisplay","totDisplay","emojiDisplay","display","question","prompt","soundDisplay","clueDisplay","qText"];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.textContent.trim()) {
+            var txt = el.textContent.trim();
+            // Skip placeholder texts
+            if (txt.indexOf("Click") === 0 || txt.indexOf("Loading") === 0 || txt === "Spin to get a question!") continue;
+            return txt;
+          }
+        }
+        // Try elements with class embed-output
+        var outputs = document.querySelectorAll(".embed-output");
+        for (var j = 0; j < outputs.length; j++) {
+          var ot = outputs[j].textContent.trim();
+          if (ot && ot.indexOf("Click") !== 0 && ot.indexOf("Loading") !== 0) return ot;
+        }
+        return "";
+      }
+
+      // Copy Prompt
+      if (copyPromptBtn) {
+        copyPromptBtn.addEventListener("click", function () {
+          var text = getPromptText();
+          if (!text) { if (statusEl) statusEl.textContent = "Generate a prompt first."; return; }
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(text, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Copy Gentle Share Note
+      if (copyNoteBtn) {
+        copyNoteBtn.addEventListener("click", function () {
+          var prompt = getPromptText();
+          var response = responseEl ? responseEl.value.trim() : "";
+          var title = document.title.replace(" — Game", "").replace(" — Free Online Icebreaker", "").trim();
+          var note = "I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n" + (prompt || "(a gentle moment)") + "\n";
+          if (response) { note += "\nMy pressure-free response:\n" + response + "\n"; }
+          note += "\nNot perfect. Just shared.\n\n" + window.location.href;
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(note, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Clear Response
+      if (clearBtn && responseEl) {
+        clearBtn.addEventListener("click", function () {
+          responseEl.value = "";
+          if (statusEl) statusEl.textContent = "Response cleared.";
+        });
+      }
+    })();
+  </script>
+  <script>
+    (function(){var s=document.getElementById("embedShareStatus"),pb=document.getElementById("sharePromptBtn"),nb=document.getElementById("shareNoteBtn"),selectedCell=null;
+    document.querySelectorAll(".bingo-cell").forEach(function(c){c.addEventListener("click",function(){if(c.classList.contains("free"))return;selectedCell=c.textContent.trim();});});
+    if(pb)pb.addEventListener("click",function(){if(!selectedCell){if(s)s.textContent="Select a bingo square first.";return;}if(typeof copyToClipboard==="function")copyToClipboard(selectedCell,s);});
+    if(nb)nb.addEventListener("click",function(){if(!selectedCell){if(s)s.textContent="Select a bingo square first.";return;}var note="I tried an icebreaker bingo game on Free Fun Icebreaker Games.\n\nA moment I connected with: "+selectedCell+"\n\nNot perfect. Just shared.";if(typeof copyToClipboard==="function")copyToClipboard(note,s);});})();
+  </script>
+</body></html>

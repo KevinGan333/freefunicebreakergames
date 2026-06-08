@@ -1,0 +1,26 @@
+================================================================
+Performance & Safety Checklist — Free Fun Icebreaker Games
+================================================================
+
+[ ] 1.  No external CDN files are used.
+[ ] 2.  No external JavaScript files are loaded.
+[ ] 3.  No external CSS files are loaded.
+[ ] 4.  No external fonts are loaded (system fonts only).
+[ ] 5.  No analytics scripts (Google Analytics, etc.) are present.
+[ ] 6.  No ad scripts are present.
+[ ] 7.  No social media SDKs (Facebook, X, LinkedIn, etc.) are present.
+[ ] 8.  No third-party iframe games are embedded.
+[ ] 9.  All iframes point to local /embed/ files only.
+[ ] 10. All iframes have: sandbox="allow-scripts allow-same-origin".
+[ ] 11. No iframe uses allow-top-navigation.
+[ ] 12. No eval() anywhere in JavaScript.
+[ ] 13. No new Function() anywhere in JavaScript.
+[ ] 14. No localStorage usage.
+[ ] 15. No sessionStorage usage.
+[ ] 16. No cookies created or read.
+[ ] 17. No network requests for user responses (everything is local).
+[ ] 18. CSS is 100% local (no external stylesheet imports).
+[ ] 19. JavaScript is 100% local (no external script imports).
+[ ] 20. All pages load without console errors.
+[ ] 21. textContent used for all dynamic text output (not innerHTML).
+[ ] 22. User input not logged to console.

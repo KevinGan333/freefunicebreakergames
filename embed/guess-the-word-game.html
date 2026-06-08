@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+  <title>Guess the Word</title><link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/share.js"></script></head>
+<body class="embed-game">
+<h2>💡 Guess the Word</h2>
+<p class="embed-subtitle">Read the clue and try to guess the hidden word!</p>
+<div class="embed-output" id="clueDisplay" style="font-size:1.1rem;font-weight:600;">Click "Next Word" to start!</div>
+<div class="answer-reveal" id="answerDisplay"></div>
+<div>
+  <button id="revealBtn" class="embed-btn">👀 Reveal Answer</button>
+  <button id="nextBtn" class="embed-btn embed-btn-secondary">Next Word ➡️</button>
+</div>
+<div class="embed-feedback" id="feedback"></div>
+<script>(function(){"use strict";
+var words=[{w:"Elephant",c:"A large gray animal with a long trunk and big ears."},{w:"Pizza",c:"A round Italian dish topped with cheese, sauce, and various toppings."},{w:"Guitar",c:"A musical instrument with six strings, played by strumming or plucking."},{w:"Volcano",c:"A mountain that can erupt with hot lava, ash, and gases."},{w:"Telescope",c:"A tool used to observe distant stars, planets, and galaxies."},{w:"Kangaroo",c:"An Australian animal that hops on strong back legs and carries babies in a pouch."},{w:"Umbrella",c:"A portable device you open to stay dry in the rain."},{w:"Chameleon",c:"A lizard known for changing its color to match its surroundings."},{w:"Lighthouse",c:"A tall tower by the sea that shines a light to guide ships at night."},{w:"Bicycle",c:"A two-wheeled vehicle powered by pedaling with your feet."},{w:"Origami",c:"The Japanese art of folding paper into shapes like animals and flowers."},{w:"Saxophone",c:"A brass wind instrument with a curved body, popular in jazz music."},{w:"Glacier",c:"A massive slow-moving river of ice found in polar regions and high mountains."},{w:"Sushi",c:"A Japanese dish made with vinegared rice, often paired with raw fish."},{w:"Compass",c:"A navigation instrument with a magnetic needle that always points north."}];
+var clueEl=document.getElementById("clueDisplay"),ansEl=document.getElementById("answerDisplay"),f=document.getElementById("feedback"),last=-1,current="",c=0;
+function showWord(){var i;do{i=Math.floor(Math.random()*words.length)}while(i===last&&words.length>1);last=i;c++;var w=words[i];clueEl.textContent="Clue: "+w.c;ansEl.textContent=w.w;ansEl.classList.remove("visible");current=w.w;clueEl.classList.add("output-active");f.textContent="Word #"+c+" — can you guess it?";}
+document.getElementById("revealBtn").addEventListener("click",function(){ansEl.classList.add("visible");f.textContent="Word #"+c+" — the answer is: "+current+"!";});
+document.getElementById("nextBtn").addEventListener("click",showWord);
+showWord();})();</script>
+
+  <!-- Gentle Share Panel -->
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy the current prompt or share a gentle note. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Prompt</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      // Gentle Share wiring for embed games
+      var statusEl = document.getElementById("embedShareStatus");
+      var copyPromptBtn = document.getElementById("sharePromptBtn");
+      var copyNoteBtn = document.getElementById("shareNoteBtn");
+      var responseEl = document.getElementById("embedResponse");
+      var clearBtn = document.getElementById("clearResponseBtn");
+
+      // Helper: find the main display/prompt element
+      function getPromptText() {
+        // Try common output/display element IDs
+        var ids = ["rqDisplay","wyrDisplay","totDisplay","emojiDisplay","display","question","prompt","soundDisplay","clueDisplay","qText"];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.textContent.trim()) {
+            var txt = el.textContent.trim();
+            // Skip placeholder texts
+            if (txt.indexOf("Click") === 0 || txt.indexOf("Loading") === 0 || txt === "Spin to get a question!") continue;
+            return txt;
+          }
+        }
+        // Try elements with class embed-output
+        var outputs = document.querySelectorAll(".embed-output");
+        for (var j = 0; j < outputs.length; j++) {
+          var ot = outputs[j].textContent.trim();
+          if (ot && ot.indexOf("Click") !== 0 && ot.indexOf("Loading") !== 0) return ot;
+        }
+        return "";
+      }
+
+      // Copy Prompt
+      if (copyPromptBtn) {
+        copyPromptBtn.addEventListener("click", function () {
+          var text = getPromptText();
+          if (!text) { if (statusEl) statusEl.textContent = "Generate a prompt first."; return; }
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(text, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Copy Gentle Share Note
+      if (copyNoteBtn) {
+        copyNoteBtn.addEventListener("click", function () {
+          var prompt = getPromptText();
+          var response = responseEl ? responseEl.value.trim() : "";
+          var title = document.title.replace(" — Game", "").replace(" — Free Online Icebreaker", "").trim();
+          var note = "I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n" + (prompt || "(a gentle moment)") + "\n";
+          if (response) { note += "\nMy pressure-free response:\n" + response + "\n"; }
+          note += "\nNot perfect. Just shared.\n\n" + window.location.href;
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(note, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Clear Response
+      if (clearBtn && responseEl) {
+        clearBtn.addEventListener("click", function () {
+          responseEl.value = "";
+          if (statusEl) statusEl.textContent = "Response cleared.";
+        });
+      }
+    })();
+  </script>
+</body></html>

@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+  <title>Personality Quiz</title><link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/share.js"></script></head>
+<body class="embed-game">
+<h2>🧠 Personality Quiz</h2>
+<p class="embed-subtitle">Answer 5 fun questions and discover your lighthearted personality type!</p>
+<div id="quizArea">
+  <div class="quiz-question" id="qText">Loading...</div>
+  <div class="quiz-options" id="qOptions"></div>
+  <div id="quizResult" style="display:none;"></div>
+</div>
+<button id="restartBtn" class="embed-btn embed-btn-outline" style="display:none;margin-top:0.75rem;">↺ Take Quiz Again</button>
+<div class="embed-feedback" id="feedback"></div>
+<script>(function(){"use strict";
+var questions=[{q:"How do you prefer to spend a free afternoon?",o:["Exploring somewhere new","Reading or relaxing at home","Hanging out with friends","Working on a creative project"]},{q:"What motivates you most?",o:["Achieving goals","Learning new things","Helping others","Expressing creativity"]},{q:"How do you make decisions?",o:["Trust my gut instinct","Analyze pros and cons carefully","Ask friends for advice","Go with whatever feels right in the moment"]},{q:"What is your ideal work environment?",o:["Fast-paced and dynamic","Quiet and focused","Collaborative and social","Flexible and creative"]},{q:"At a party, you are most likely to...",o:["Be the center of attention","Have deep one-on-one conversations","Help the host and make sure everyone is comfortable","Find the snacks and observe the room"]}];
+var types=["The Explorer: You are curious and adventurous, always seeking new experiences.","The Thinker: You are thoughtful and analytical, finding depth in quiet moments.","The Connector: You thrive on relationships and making others feel valued.","The Creator: You see the world differently and express yourself through originality."];
+var qIdx=0,answers=[],qText=document.getElementById("qText"),qOpts=document.getElementById("qOptions"),result=document.getElementById("quizResult"),restart=document.getElementById("restartBtn"),f=document.getElementById("feedback");
+function showQuestion(){if(qIdx>=questions.length){showResult();return;}var q=questions[qIdx];qText.textContent="Question "+(qIdx+1)+"/5: "+q.q;qOpts.textContent="";q.o.forEach(function(o,i){var btn=document.createElement("button");btn.className="quiz-option";btn.textContent=o;btn.addEventListener("click",function(){answers.push(i);qIdx++;showQuestion();});qOpts.appendChild(btn);});f.textContent="Question "+(qIdx+1)+" of 5";}
+function showResult(){var scores=[0,0,0,0];answers.forEach(function(a){scores[a]++;});var max=0,mIdx=0;scores.forEach(function(s,i){if(s>max){max=s;mIdx=i;}});qText.style.display="none";qOpts.style.display="none";result.style.display="block";result.className="quiz-result";result.textContent=types[mIdx];restart.style.display="inline-flex";f.textContent="Quiz complete! Share your result with the group.";}
+restart.addEventListener("click",function(){qIdx=0;answers=[];qText.style.display="block";qOpts.style.display="block";result.style.display="none";restart.style.display="none";showQuestion();});
+showQuestion();})();</script>
+
+  <!-- Gentle Share Panel -->
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy the current prompt or share a gentle note. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Prompt</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      // Gentle Share wiring for embed games
+      var statusEl = document.getElementById("embedShareStatus");
+      var copyPromptBtn = document.getElementById("sharePromptBtn");
+      var copyNoteBtn = document.getElementById("shareNoteBtn");
+      var responseEl = document.getElementById("embedResponse");
+      var clearBtn = document.getElementById("clearResponseBtn");
+
+      // Helper: find the main display/prompt element
+      function getPromptText() {
+        // Try common output/display element IDs
+        var ids = ["rqDisplay","wyrDisplay","totDisplay","emojiDisplay","display","question","prompt","soundDisplay","clueDisplay","qText"];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.textContent.trim()) {
+            var txt = el.textContent.trim();
+            // Skip placeholder texts
+            if (txt.indexOf("Click") === 0 || txt.indexOf("Loading") === 0 || txt === "Spin to get a question!") continue;
+            return txt;
+          }
+        }
+        // Try elements with class embed-output
+        var outputs = document.querySelectorAll(".embed-output");
+        for (var j = 0; j < outputs.length; j++) {
+          var ot = outputs[j].textContent.trim();
+          if (ot && ot.indexOf("Click") !== 0 && ot.indexOf("Loading") !== 0) return ot;
+        }
+        return "";
+      }
+
+      // Copy Prompt
+      if (copyPromptBtn) {
+        copyPromptBtn.addEventListener("click", function () {
+          var text = getPromptText();
+          if (!text) { if (statusEl) statusEl.textContent = "Generate a prompt first."; return; }
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(text, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Copy Gentle Share Note
+      if (copyNoteBtn) {
+        copyNoteBtn.addEventListener("click", function () {
+          var prompt = getPromptText();
+          var response = responseEl ? responseEl.value.trim() : "";
+          var title = document.title.replace(" — Game", "").replace(" — Free Online Icebreaker", "").trim();
+          var note = "I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n" + (prompt || "(a gentle moment)") + "\n";
+          if (response) { note += "\nMy pressure-free response:\n" + response + "\n"; }
+          note += "\nNot perfect. Just shared.\n\n" + window.location.href;
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(note, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Clear Response
+      if (clearBtn && responseEl) {
+        clearBtn.addEventListener("click", function () {
+          responseEl.value = "";
+          if (statusEl) statusEl.textContent = "Response cleared.";
+        });
+      }
+    })();
+  </script>
+  <script>
+    (function(){var s=document.getElementById("embedShareStatus"),pb=document.getElementById("sharePromptBtn"),nb=document.getElementById("shareNoteBtn");
+    if(pb)pb.addEventListener("click",function(){var r=document.getElementById("quizResult");if(!r||!r.textContent.trim()||r.style.display==="none"){if(s)s.textContent="Complete the quiz first.";return;}if(typeof copyToClipboard==="function")copyToClipboard(r.textContent.trim(),s);});
+    if(nb)nb.addEventListener("click",function(){var r=document.getElementById("quizResult");if(!r||!r.textContent.trim()||r.style.display==="none"){if(s)s.textContent="Complete the quiz first.";return;}var note="I tried a low-pressure personality quiz on Free Fun Icebreaker Games.\n\nMy result: "+r.textContent.trim()+"\n\nThis is not a real personality test. It is just a low-pressure conversation starter.\n\nNot perfect. Just shared.";if(typeof copyToClipboard==="function")copyToClipboard(note,s);});})();
+  </script>
+</body></html>

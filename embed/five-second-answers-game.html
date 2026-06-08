@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+  <title>Five-Second Answers</title><link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/share.js"></script></head>
+<body class="embed-game">
+<h2>⏱️ Five-Second Answers</h2>
+<p class="embed-subtitle">Read the prompt and answer before the timer hits zero!</p>
+<div class="timer-display" id="timer">5.0</div>
+<div class="embed-output" id="prompt" style="font-size:1.2rem;font-weight:600;">Click "Start" to begin!</div>
+<div>
+  <button id="startBtn" class="embed-btn embed-btn-large">▶ Start</button>
+  <button id="nextBtn" class="embed-btn embed-btn-secondary">Next Prompt</button>
+</div>
+<div class="embed-feedback" id="feedback"></div>
+<script>(function(){"use strict";
+var prompts=["Name 3 ice cream flavors!","Name 3 countries!","Name 3 things you find in a kitchen!","Name 3 movie titles!","Name 3 animals that live in the ocean!","Name 3 pizza toppings!","Name 3 sports!","Name 3 things that are yellow!","Name 3 famous people!","Name 3 ways to travel!","Name 3 things you can drink!","Name 3 superpowers!","Name 3 things you do before bed!","Name 3 things that fly!","Name 3 breakfast foods!"];
+var timerEl=document.getElementById("timer"),promptEl=document.getElementById("prompt"),f=document.getElementById("feedback"),seconds=5,running=false,interval=null,last=-1,c=0;
+document.getElementById("startBtn").addEventListener("click",function(){if(running)return;running=true;seconds=5;timerEl.textContent="5.0";timerEl.classList.remove("warning");interval=setInterval(function(){seconds-=0.1;timerEl.textContent=seconds.toFixed(1);if(seconds<=1.5)timerEl.classList.add("warning");if(seconds<=0){clearInterval(interval);running=false;timerEl.textContent="TIME!";f.textContent="Time is up! Did you get all 3?";}},100);f.textContent="Go! 5 seconds — answer now!";});
+document.getElementById("nextBtn").addEventListener("click",function(){clearInterval(interval);running=false;var i;do{i=Math.floor(Math.random()*prompts.length)}while(i===last&&prompts.length>1);last=i;c++;promptEl.textContent=prompts[i];promptEl.classList.add("output-active");seconds=5;timerEl.textContent="5.0";timerEl.classList.remove("warning");f.textContent="Prompt #"+c+" — ready? Click Start!";});})();</script>
+
+  <!-- Gentle Share Panel -->
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy the current prompt or share a gentle note. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Prompt</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      // Gentle Share wiring for embed games
+      var statusEl = document.getElementById("embedShareStatus");
+      var copyPromptBtn = document.getElementById("sharePromptBtn");
+      var copyNoteBtn = document.getElementById("shareNoteBtn");
+      var responseEl = document.getElementById("embedResponse");
+      var clearBtn = document.getElementById("clearResponseBtn");
+
+      // Helper: find the main display/prompt element
+      function getPromptText() {
+        // Try common output/display element IDs
+        var ids = ["rqDisplay","wyrDisplay","totDisplay","emojiDisplay","display","question","prompt","soundDisplay","clueDisplay","qText"];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.textContent.trim()) {
+            var txt = el.textContent.trim();
+            // Skip placeholder texts
+            if (txt.indexOf("Click") === 0 || txt.indexOf("Loading") === 0 || txt === "Spin to get a question!") continue;
+            return txt;
+          }
+        }
+        // Try elements with class embed-output
+        var outputs = document.querySelectorAll(".embed-output");
+        for (var j = 0; j < outputs.length; j++) {
+          var ot = outputs[j].textContent.trim();
+          if (ot && ot.indexOf("Click") !== 0 && ot.indexOf("Loading") !== 0) return ot;
+        }
+        return "";
+      }
+
+      // Copy Prompt
+      if (copyPromptBtn) {
+        copyPromptBtn.addEventListener("click", function () {
+          var text = getPromptText();
+          if (!text) { if (statusEl) statusEl.textContent = "Generate a prompt first."; return; }
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(text, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Copy Gentle Share Note
+      if (copyNoteBtn) {
+        copyNoteBtn.addEventListener("click", function () {
+          var prompt = getPromptText();
+          var response = responseEl ? responseEl.value.trim() : "";
+          var title = document.title.replace(" — Game", "").replace(" — Free Online Icebreaker", "").trim();
+          var note = "I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n" + (prompt || "(a gentle moment)") + "\n";
+          if (response) { note += "\nMy pressure-free response:\n" + response + "\n"; }
+          note += "\nNot perfect. Just shared.\n\n" + window.location.href;
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(note, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Clear Response
+      if (clearBtn && responseEl) {
+        clearBtn.addEventListener("click", function () {
+          responseEl.value = "";
+          if (statusEl) statusEl.textContent = "Response cleared.";
+        });
+      }
+    })();
+  </script>
+  <script>
+    (function(){var s=document.getElementById("embedShareStatus"),pb=document.getElementById("sharePromptBtn"),nb=document.getElementById("shareNoteBtn");
+    if(pb)pb.addEventListener("click",function(){var p=document.getElementById("prompt");if(!p||!p.textContent.trim()||p.textContent.indexOf("Click")===0){if(s)s.textContent="Generate a prompt first.";return;}if(typeof copyToClipboard==="function")copyToClipboard(p.textContent.trim(),s);});
+    if(nb)nb.addEventListener("click",function(){var p=document.getElementById("prompt");var pText=p?p.textContent.trim():"";if(!pText||pText.indexOf("Click")===0)pText="(a prompt)";var note="I tried a quick-answer game on Free Fun Icebreaker Games.\n\nPrompt: "+pText+"\n\nNot perfect. Just shared.";if(typeof copyToClipboard==="function")copyToClipboard(note,s);});})();
+  </script>
+</body></html>

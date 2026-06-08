@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+  <title>Speed Introductions</title><link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/share.js"></script></head>
+<body class="embed-game">
+<h2>⚡ Speed Introductions</h2>
+<p class="embed-subtitle">Set the timer, pair up, and introduce yourselves before time runs out!</p>
+<div class="timer-display" id="timer">0:30</div>
+<div class="timer-preset-btns">
+  <button class="embed-btn" data-sec="30">30 Seconds</button>
+  <button class="embed-btn embed-btn-secondary" data-sec="60">60 Seconds</button>
+</div>
+<div class="embed-output" id="prompt" style="font-size:1.1rem;font-weight:600;">Share your name, role, and a fun fact.</div>
+<div>
+  <button id="startBtn" class="embed-btn embed-btn-large">▶ Start Timer</button>
+  <button id="pauseBtn" class="embed-btn embed-btn-outline">⏸ Pause</button>
+  <button id="resetBtn" class="embed-btn embed-btn-outline">↺ Reset</button>
+  <button id="nextPromptBtn" class="embed-btn embed-btn-secondary">Next Prompt</button>
+</div>
+<div class="embed-feedback" id="feedback">Ready? Choose a time and start!</div>
+<script>(function(){"use strict";
+var prompts=["Share your name, role, and a fun fact.","What is your favorite project you have worked on?","What hobby would you pursue if you had more time?","What is one thing on your bucket list?","What is the best advice you have ever received?","What is your go-to productivity tip?","What book or movie changed your perspective?","If you could swap jobs for a day, what would you do?","What is one thing people misunderstand about you?","What is your favorite way to learn something new?","What would your ideal workday look like?","What is something you are proud of?","What do you do to recharge after a long week?","If you could travel anywhere tomorrow, where to?","What is a skill you want to develop this year?"];
+var timerEl=document.getElementById("timer"),promptEl=document.getElementById("prompt"),f=document.getElementById("feedback"),seconds=30,total=30,interval=null,running=false,lastP=-1,pc=0;
+function updateDisplay(){var m=Math.floor(seconds/60),s=seconds%60;timerEl.textContent=m+":"+(s<10?"0":"")+s;timerEl.classList.toggle("warning",seconds<=10);}
+document.querySelectorAll("[data-sec]").forEach(function(b){b.addEventListener("click",function(){if(running)return;seconds=parseInt(this.getAttribute("data-sec"));total=seconds;updateDisplay();document.querySelectorAll("[data-sec]").forEach(function(x){x.classList.remove("embed-btn-secondary");});this.classList.add("embed-btn-secondary");f.textContent="Timer set to "+total+" seconds.";});});
+document.getElementById("startBtn").addEventListener("click",function(){if(running)return;running=true;f.textContent="Go! Introduce yourselves!";interval=setInterval(function(){seconds--;updateDisplay();if(seconds<=0){clearInterval(interval);running=false;f.textContent="Time is up! Rotate partners!";timerEl.classList.add("warning");}},1000);});
+document.getElementById("pauseBtn").addEventListener("click",function(){if(!running)return;clearInterval(interval);running=false;f.textContent="Paused. Click Start to resume.";});
+document.getElementById("resetBtn").addEventListener("click",function(){clearInterval(interval);running=false;seconds=total;updateDisplay();f.textContent="Reset. Ready to go again!";});
+document.getElementById("nextPromptBtn").addEventListener("click",function(){var i;do{i=Math.floor(Math.random()*prompts.length)}while(i===lastP&&prompts.length>1);lastP=i;pc++;promptEl.textContent=prompts[i];promptEl.classList.add("output-active");f.textContent="Prompt #"+pc+" — use this for the next round!";});
+})();</script>
+
+  <!-- Gentle Share Panel -->
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy the current prompt or share a gentle note. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Prompt</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      // Gentle Share wiring for embed games
+      var statusEl = document.getElementById("embedShareStatus");
+      var copyPromptBtn = document.getElementById("sharePromptBtn");
+      var copyNoteBtn = document.getElementById("shareNoteBtn");
+      var responseEl = document.getElementById("embedResponse");
+      var clearBtn = document.getElementById("clearResponseBtn");
+
+      // Helper: find the main display/prompt element
+      function getPromptText() {
+        // Try common output/display element IDs
+        var ids = ["rqDisplay","wyrDisplay","totDisplay","emojiDisplay","display","question","prompt","soundDisplay","clueDisplay","qText"];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.textContent.trim()) {
+            var txt = el.textContent.trim();
+            // Skip placeholder texts
+            if (txt.indexOf("Click") === 0 || txt.indexOf("Loading") === 0 || txt === "Spin to get a question!") continue;
+            return txt;
+          }
+        }
+        // Try elements with class embed-output
+        var outputs = document.querySelectorAll(".embed-output");
+        for (var j = 0; j < outputs.length; j++) {
+          var ot = outputs[j].textContent.trim();
+          if (ot && ot.indexOf("Click") !== 0 && ot.indexOf("Loading") !== 0) return ot;
+        }
+        return "";
+      }
+
+      // Copy Prompt
+      if (copyPromptBtn) {
+        copyPromptBtn.addEventListener("click", function () {
+          var text = getPromptText();
+          if (!text) { if (statusEl) statusEl.textContent = "Generate a prompt first."; return; }
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(text, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Copy Gentle Share Note
+      if (copyNoteBtn) {
+        copyNoteBtn.addEventListener("click", function () {
+          var prompt = getPromptText();
+          var response = responseEl ? responseEl.value.trim() : "";
+          var title = document.title.replace(" — Game", "").replace(" — Free Online Icebreaker", "").trim();
+          var note = "I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n" + (prompt || "(a gentle moment)") + "\n";
+          if (response) { note += "\nMy pressure-free response:\n" + response + "\n"; }
+          note += "\nNot perfect. Just shared.\n\n" + window.location.href;
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(note, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Clear Response
+      if (clearBtn && responseEl) {
+        clearBtn.addEventListener("click", function () {
+          responseEl.value = "";
+          if (statusEl) statusEl.textContent = "Response cleared.";
+        });
+      }
+    })();
+  </script>
+</body></html>

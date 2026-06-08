@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, follow">
+  <title>Two Truths and a Lie — Game</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/share.js"></script>
+</head>
+<body class="embed-game">
+  <h2>🎭 Two Truths and a Lie</h2>
+  <p class="embed-subtitle">Enter two true statements and one lie about yourself. Click Shuffle to mix them up, then have your group guess which one is the lie.</p>
+
+  <div class="embed-input-group">
+    <label for="ttlTruth1">✅ Truth 1</label>
+    <input type="text" id="ttlTruth1" class="embed-input" placeholder="Enter your first truth…" maxlength="150">
+
+    <label for="ttlTruth2">✅ Truth 2</label>
+    <input type="text" id="ttlTruth2" class="embed-input" placeholder="Enter your second truth…" maxlength="150">
+
+    <label for="ttlLie">❌ Lie</label>
+    <input type="text" id="ttlLie" class="embed-input" placeholder="Enter your lie…" maxlength="150">
+  </div>
+
+  <div style="margin-top:1rem;">
+    <button id="ttlShuffleBtn" class="embed-btn embed-btn-large">🔀 Shuffle &amp; Reveal</button>
+  </div>
+
+  <div class="embed-output" id="ttlOutput" style="display:none;">
+    <p style="font-weight:700; margin-bottom:0.6rem; color:#1e293b;">Which one is the lie? 🤔</p>
+    <ul id="ttlList"></ul>
+  </div>
+  <div class="embed-feedback" id="ttlFeedback"></div>
+
+  <script>
+    (function () {
+      "use strict";
+      var btn = document.getElementById("ttlShuffleBtn");
+      var output = document.getElementById("ttlOutput");
+      var list = document.getElementById("ttlList");
+      var feedback = document.getElementById("ttlFeedback");
+      var truth1 = document.getElementById("ttlTruth1");
+      var truth2 = document.getElementById("ttlTruth2");
+      var lie = document.getElementById("ttlLie");
+
+      btn.addEventListener("click", function () {
+        var statements = [
+          truth1.value.trim() || "(Truth 1 — not filled in)",
+          truth2.value.trim() || "(Truth 2 — not filled in)",
+          lie.value.trim() || "(Lie — not filled in)"
+        ];
+
+        // Fisher-Yates shuffle
+        for (var i = statements.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var temp = statements[i];
+          statements[i] = statements[j];
+          statements[j] = temp;
+        }
+
+        list.textContent = "";
+        statements.forEach(function (s) {
+          var li = document.createElement("li");
+          li.textContent = s;
+          list.appendChild(li);
+        });
+
+        output.style.display = "block";
+        output.classList.add("output-active");
+        feedback.textContent = "Statements shuffled! Read them aloud to your group.";
+      });
+    })();
+  </script>
+  <!-- Gentle Share Panel -->
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">You can copy the shuffled statements. Nothing is saved or posted automatically. You do not have to make it clever — simple is enough.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Statements</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      // Gentle Share wiring for embed games
+      var statusEl = document.getElementById("embedShareStatus");
+      var copyPromptBtn = document.getElementById("sharePromptBtn");
+      var copyNoteBtn = document.getElementById("shareNoteBtn");
+      var responseEl = document.getElementById("embedResponse");
+      var clearBtn = document.getElementById("clearResponseBtn");
+
+      // Helper: find the main display/prompt element
+      function getPromptText() {
+        // Try common output/display element IDs
+        var ids = ["rqDisplay","wyrDisplay","totDisplay","emojiDisplay","display","question","prompt","soundDisplay","clueDisplay","qText"];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.textContent.trim()) {
+            var txt = el.textContent.trim();
+            // Skip placeholder texts
+            if (txt.indexOf("Click") === 0 || txt.indexOf("Loading") === 0 || txt === "Spin to get a question!") continue;
+            return txt;
+          }
+        }
+        // Try elements with class embed-output
+        var outputs = document.querySelectorAll(".embed-output");
+        for (var j = 0; j < outputs.length; j++) {
+          var ot = outputs[j].textContent.trim();
+          if (ot && ot.indexOf("Click") !== 0 && ot.indexOf("Loading") !== 0) return ot;
+        }
+        return "";
+      }
+
+      // Copy Prompt
+      if (copyPromptBtn) {
+        copyPromptBtn.addEventListener("click", function () {
+          var text = getPromptText();
+          if (!text) { if (statusEl) statusEl.textContent = "Generate a prompt first."; return; }
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(text, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Copy Gentle Share Note
+      if (copyNoteBtn) {
+        copyNoteBtn.addEventListener("click", function () {
+          var prompt = getPromptText();
+          var response = responseEl ? responseEl.value.trim() : "";
+          var title = document.title.replace(" — Game", "").replace(" — Free Online Icebreaker", "").trim();
+          var note = "I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n" + (prompt || "(a gentle moment)") + "\n";
+          if (response) { note += "\nMy pressure-free response:\n" + response + "\n"; }
+          note += "\nNot perfect. Just shared.\n\n" + window.location.href;
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(note, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Clear Response
+      if (clearBtn && responseEl) {
+        clearBtn.addEventListener("click", function () {
+          responseEl.value = "";
+          if (statusEl) statusEl.textContent = "Response cleared.";
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, follow">
+  <title>Random Icebreaker Questions — Game</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/share.js"></script>
+</head>
+<body class="embed-game">
+  <h2>❓ Random Icebreaker Questions</h2>
+  <p class="embed-subtitle">Tap the button to reveal a random question. Use it to kick off a meeting, start a class, or warm up a group. Copy it with one click.</p>
+
+  <div class="embed-output" id="rqDisplay" style="font-size:1.25rem; font-weight:600;">
+    Click "Next Question" to get started!
+  </div>
+
+  <div>
+    <button id="rqNextBtn" class="embed-btn embed-btn-large">Next Question ➡️</button>
+    <button id="rqCopyBtn" class="embed-btn embed-btn-outline">📋 Copy Question</button>
+  </div>
+  <div class="embed-feedback" id="rqFeedback"></div>
+
+  <script>
+    (function () {
+      "use strict";
+      var questions = [
+        "What is one skill you would love to learn this year?",
+        "If you could travel anywhere in the world right now, where would you go?",
+        "What is the best piece of advice you have ever received?",
+        "What is your favorite way to spend a rainy day?",
+        "If you could have dinner with anyone, living or dead, who would it be?",
+        "What is the most interesting place you have ever visited?",
+        "What hobby would you pursue if time and money were no object?",
+        "What book or movie has influenced you the most?",
+        "If you could instantly master any instrument, which would you choose?",
+        "What is the best thing that happened to you this week?",
+        "What is your go-to karaoke song?",
+        "If you could only eat one cuisine for the rest of your life, what would it be?",
+        "What is the most unusual job you have ever had?",
+        "If you were an animal, what would you be and why?",
+        "What is one thing on your bucket list?",
+        "What is your favorite family tradition?",
+        "If you could switch lives with a fictional character for a day, who would it be?",
+        "What is the best concert or live event you have ever attended?",
+        "What three words would your friends use to describe you?",
+        "If you could invent something, what would it be?",
+        "What is your favorite ice cream flavor?",
+        "What is the most adventurous thing you have ever done?",
+        "If you could have any superpower, what would you choose?",
+        "What is your favorite season and why?",
+        "What is a fun fact about you that most people do not know?",
+        "If you won the lottery, what is the first thing you would do?",
+        "What is your favorite childhood memory?",
+        "What would the title of your autobiography be?",
+        "If you could live in any era of history, which would you pick?",
+        "What always makes you laugh, no matter what?"
+      ];
+
+      var display = document.getElementById("rqDisplay");
+      var nextBtn = document.getElementById("rqNextBtn");
+      var copyBtn = document.getElementById("rqCopyBtn");
+      var feedback = document.getElementById("rqFeedback");
+      var lastIdx = -1;
+      var count = 0;
+
+      function showQuestion() {
+        var idx;
+        if (questions.length === 1) {
+          idx = 0;
+        } else {
+          do {
+            idx = Math.floor(Math.random() * questions.length);
+          } while (idx === lastIdx);
+        }
+        lastIdx = idx;
+        count++;
+        display.textContent = questions[idx];
+        display.classList.add("output-active");
+        feedback.textContent = "Question #" + count;
+      }
+
+      nextBtn.addEventListener("click", showQuestion);
+
+      copyBtn.addEventListener("click", function () {
+        var text = display.textContent;
+        if (!text || text.indexOf("Click") === 0) {
+          feedback.textContent = "Generate a question first, then copy it.";
+          return;
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            feedback.textContent = "Copied to clipboard!";
+          }).catch(function () {
+            fallbackCopy(text);
+          });
+        } else {
+          fallbackCopy(text);
+        }
+      });
+
+      function fallbackCopy(text) {
+        var textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand("copy");
+          feedback.textContent = "Copied to clipboard!";
+        } catch (e) {
+          feedback.textContent = "Could not copy. Please select and copy the text manually.";
+        }
+        document.body.removeChild(textarea);
+      }
+    })();
+  </script>
+  <!-- Gentle Share Panel -->
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy the question or share a gentle note. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Question</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <label for="embedResponse" class="sr-only">Your response (optional)</label>
+    <textarea id="embedResponse" class="gentle-share__textarea" placeholder="Your response (optional) — share only what feels comfortable." rows="2"></textarea>
+    <button id="clearResponseBtn" class="embed-btn embed-btn-outline" type="button" style="margin-top:0.25rem;">Clear My Response</button>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      // Gentle Share wiring for embed games
+      var statusEl = document.getElementById("embedShareStatus");
+      var copyPromptBtn = document.getElementById("sharePromptBtn");
+      var copyNoteBtn = document.getElementById("shareNoteBtn");
+      var responseEl = document.getElementById("embedResponse");
+      var clearBtn = document.getElementById("clearResponseBtn");
+
+      // Helper: find the main display/prompt element
+      function getPromptText() {
+        // Try common output/display element IDs
+        var ids = ["rqDisplay","wyrDisplay","totDisplay","emojiDisplay","display","question","prompt","soundDisplay","clueDisplay","qText"];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.textContent.trim()) {
+            var txt = el.textContent.trim();
+            // Skip placeholder texts
+            if (txt.indexOf("Click") === 0 || txt.indexOf("Loading") === 0 || txt === "Spin to get a question!") continue;
+            return txt;
+          }
+        }
+        // Try elements with class embed-output
+        var outputs = document.querySelectorAll(".embed-output");
+        for (var j = 0; j < outputs.length; j++) {
+          var ot = outputs[j].textContent.trim();
+          if (ot && ot.indexOf("Click") !== 0 && ot.indexOf("Loading") !== 0) return ot;
+        }
+        return "";
+      }
+
+      // Copy Prompt
+      if (copyPromptBtn) {
+        copyPromptBtn.addEventListener("click", function () {
+          var text = getPromptText();
+          if (!text) { if (statusEl) statusEl.textContent = "Generate a prompt first."; return; }
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(text, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Copy Gentle Share Note
+      if (copyNoteBtn) {
+        copyNoteBtn.addEventListener("click", function () {
+          var prompt = getPromptText();
+          var response = responseEl ? responseEl.value.trim() : "";
+          var title = document.title.replace(" — Game", "").replace(" — Free Online Icebreaker", "").trim();
+          var note = "I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n" + (prompt || "(a gentle moment)") + "\n";
+          if (response) { note += "\nMy pressure-free response:\n" + response + "\n"; }
+          note += "\nNot perfect. Just shared.\n\n" + window.location.href;
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(note, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Clear Response
+      if (clearBtn && responseEl) {
+        clearBtn.addEventListener("click", function () {
+          responseEl.value = "";
+          if (statusEl) statusEl.textContent = "Response cleared.";
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

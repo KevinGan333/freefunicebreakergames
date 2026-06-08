@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#f8fafc"/>
+  <circle cx="280" cy="315" r="180" fill="#eff6ff"/>
+  <text x="280" y="355" text-anchor="middle" font-size="140" font-family="sans-serif">🧊</text>
+  <text x="500" y="280" font-size="48" font-weight="800" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" fill="#1e293b">Free Fun</text>
+  <text x="500" y="340" font-size="48" font-weight="800" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" fill="#3b82f6">Icebreaker Games</text>
+  <text x="500" y="400" font-size="22" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" fill="#64748b">Free online icebreaker games — no signup, no download, start instantly.</text>
+  <line x1="500" y1="430" x2="750" y2="430" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="500" y="465" font-size="18" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" fill="#94a3b8">Not perfect. Just shared.</text>
+</svg>

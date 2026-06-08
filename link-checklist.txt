@@ -1,0 +1,170 @@
+================================================================
+Free Fun Icebreaker Games — QA Checklist (Phase 1.2)
+================================================================
+Run: cd freefunicebreakergames && python -m http.server 3000
+Then test: http://localhost:3000/
+
+================================================================
+PHASE 1.2 — QUALITY CHECKLIST
+================================================================
+
+=== BRAND NAME ===
+[ ] Header says "Free Fun Icebreaker Games" (one word, not "Ice Breaker")
+[ ] Footer says "Free Fun Icebreaker Games"
+[ ] No page uses "Ice Breaker" (two words)
+[ ] Title tags use correct brand name
+
+=== HEADER ===
+[ ] Logo links to / and works on every page
+[ ] Navigation: Home, All Games, Meeting Icebreakers, Classroom,
+    Team Building, Party Games, Random Game, Icebreaker Questions
+[ ] All nav links are root-relative (start with /)
+[ ] Active page highlighted in nav
+[ ] Nav wraps naturally on mobile width
+
+=== HOMEPAGE (/) ===
+[ ] H1: "Free Fun Icebreaker Games for Meetings, Teams & Classrooms"
+[ ] Subtitle: mentions meetings, classrooms, remote teams, parties
+[ ] Two CTA buttons: Browse All Games, Try a Random Game
+[ ] 5 featured game cards render with correct /games/ links
+[ ] 5 situation category cards with correct /categories/ links
+[ ] 4 time cards (5-min, 10-min, 15-min, No-Prep)
+[ ] SEO content section: "What Are Icebreaker Games?"
+[ ] OG meta tags present
+[ ] Canonical placeholder comment present
+
+=== ALL GAMES PAGE (/all-games.html) ===
+[ ] Filter buttons: All, Meetings, Classrooms, Remote Teams, Parties, Team Building
+[ ] Filtering shows/hides correct game cards
+[ ] All "Play Game" buttons link to /games/[slug].html
+[ ] OG meta tags present
+
+=== GAME DETAIL PAGES ===
+For each /games/ page:
+[ ] H1 with game name and emoji icon
+[ ] Game intro paragraph below H1
+[ ] Info card: Best for, Players, Time, Format, Difficulty
+[ ] Game frame wrapper with label and iframe
+[ ] Iframe src starts with /embed/
+[ ] Iframe has title, loading="lazy", referrerpolicy, sandbox attributes
+[ ] "How to Play" section
+[ ] "Step-by-Step Instructions" section
+[ ] "Tips for Hosts" section
+[ ] "Best Use Cases" section
+[ ] "Related Icebreaker Games" section (uses related-games grid)
+[ ] FAQ section with 4+ questions
+[ ] No link points to /categories/games/
+[ ] OG meta tags present
+[ ] Breadcrumb: Home > All Games > Game Name
+
+=== EMBED GAMES ===
+For each /embed/ page:
+[ ] Clean centered layout
+[ ] Game title and subtitle/description
+[ ] Interactive controls (buttons are large and tappable)
+[ ] Output area styled cleanly
+[ ] Feedback text for user actions
+[ ] No console errors
+[ ] No eval, no new Function
+[ ] textContent used for dynamic output
+[ ] No data collection or storage
+
+=== RANDOM GAME PAGE (/random-game.html) ===
+[ ] "Pick a Random Game" button works on first click
+[ ] Result card shows game title, description, best for, players, time
+[ ] "Play Now" button links to correct /games/ URL
+[ ] Clicking again picks a different game (no consecutive repeats)
+[ ] Result scrolls into view on mobile
+[ ] OG meta tags present
+
+=== ICEBREAKER QUESTIONS PAGE (/icebreaker-questions.html) ===
+[ ] Random question box displayed prominently
+[ ] "Show Random Question" button works
+[ ] Question displayed using textContent
+[ ] 50 questions across 5 categories:
+    Work Meetings, Remote Teams, Classrooms, Parties, Quick Check-ins
+[ ] Placeholder text styled differently from actual question
+[ ] OG meta tags present
+
+=== CATEGORY PAGES ===
+For each /categories/ page:
+[ ] H1 with category name
+[ ] SEO-friendly introduction paragraph
+[ ] Relevant game cards rendered
+[ ] All "Play Game" buttons link to /games/[slug].html
+[ ] "How to Use These Games" section
+[ ] FAQ section with 3 questions
+[ ] No link points to /categories/games/
+[ ] OG meta tags present
+
+=== ABOUT PAGE (/about.html) ===
+[ ] Explains what the site is and who it is for
+[ ] Footer brand description present
+
+=== SUBMIT A GAME (/submit-a-game.html) ===
+[ ] Static information page (no form)
+[ ] Mentions submissions coming in future version
+
+=== PRIVACY & TERMS ===
+[ ] /privacy-policy.html — clear privacy statements
+[ ] /terms.html — clear terms of use
+[ ] No OG tags on these pages (intentional — low SEO priority)
+
+=== FOOTER ===
+[ ] First column: brand name + short description
+[ ] Games column: All Games, Random Game, Icebreaker Questions
+[ ] Categories column: 5 category links
+[ ] Info column: About, Submit a Game, Privacy Policy, Terms
+[ ] Copyright line at bottom
+[ ] All links root-relative (/)
+
+=== ACCESSIBILITY ===
+[ ] Focus rings visible on keyboard navigation (Tab through page)
+[ ] All buttons have clear text labels
+[ ] All links have descriptive text
+[ ] Form inputs have labels (embed games)
+[ ] iframe has title attribute
+[ ] Color contrast is readable
+
+=== RESPONSIVE ===
+[ ] Mobile (375px width): hero text readable, cards stack, nav wraps
+[ ] Tablet (768px): cards 1-2 columns, iframe fits
+[ ] Desktop (1180px+): full layout, 2-3 card columns
+
+=== CSS ===
+[ ] No external fonts
+[ ] No external CSS frameworks
+[ ] Organized sections with clear comments
+[ ] :root variables for colors, radii, spacing
+[ ] CSS variables used consistently
+
+=== JAVASCRIPT ===
+[ ] No eval
+[ ] No new Function
+[ ] textContent used for dynamic output (not innerHTML for user data)
+[ ] Error guards on DOM element lookups
+[ ] games-data.js is single source of truth for game URLs
+[ ] No duplicate game data
+
+================================================================
+NEGATIVE TESTS (should NOT work)
+================================================================
+[ ] http://localhost:3000/categories/games/two-truths-and-a-lie.html → 404
+[ ] http://localhost:3000/categories/games/would-you-rather.html → 404
+[ ] http://localhost:3000/categories/games/this-or-that.html → 404
+[ ] http://localhost:3000/categories/games/random-icebreaker-questions.html → 404
+[ ] http://localhost:3000/categories/games/emoji-guessing-game.html → 404
+
+================================================================
+PHASE 1.3 — RECOMMENDED NEXT STEPS
+================================================================
+[ ] Add 5-10 more games with embed tools
+[ ] Add search functionality to All Games page
+[ ] Add hamburger menu for mobile nav
+[ ] Add time-based filter logic
+[ ] Add game popularity/rating display
+[ ] Working submission form on submit-a-game.html
+[ ] Add more icebreaker questions (100+)
+[ ] Add dark mode toggle
+[ ] Add schema.org structured data
+[ ] Connect domain freefunicebreakergames.com

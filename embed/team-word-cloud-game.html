@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+  <title>Team Word Cloud</title><link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/share.js"></script></head>
+<body class="embed-game">
+<h2>☁️ Team Word Cloud</h2>
+<p class="embed-subtitle">Enter words one at a time to build a local word cloud. Repeated words appear larger!</p>
+<div class="embed-input-group">
+  <label for="wordInput">Add a word</label>
+  <input type="text" id="wordInput" class="embed-input" placeholder="Type a word and press Add..." maxlength="30">
+</div>
+<div>
+  <button id="addBtn" class="embed-btn embed-btn-large">+ Add Word</button>
+  <button id="clearBtn" class="embed-btn embed-btn-outline">Clear All</button>
+</div>
+<div class="chip-container" id="wordCloud"></div>
+<div class="embed-feedback" id="feedback">Words added: 0</div>
+<script>(function(){"use strict";
+var inp=document.getElementById("wordInput"),cloud=document.getElementById("wordCloud"),f=document.getElementById("feedback"),words={},total=0;
+document.getElementById("addBtn").addEventListener("click",function(){var w=inp.value.trim().toLowerCase();if(!w){f.textContent="Type a word first!";return;}words[w]=(words[w]||0)+1;total++;renderCloud();inp.value="";inp.focus();f.textContent="Words added: "+total;});
+document.getElementById("clearBtn").addEventListener("click",function(){words={};total=0;cloud.textContent="";f.textContent="Cleared. Words added: 0";});
+function renderCloud(){cloud.textContent="";Object.keys(words).forEach(function(w){var chip=document.createElement("span");chip.className="chip";var size=Math.min(0.7+words[w]*0.2,1.6);chip.style.fontSize=size+"rem";chip.style.fontWeight=words[w]>1?"700":"500";chip.textContent=w+(words[w]>1?" ×"+words[w]:"");cloud.appendChild(chip);});}
+inp.addEventListener("keydown",function(e){if(e.key==="Enter")document.getElementById("addBtn").click();});})();</script>
+
+  <!-- Gentle Share Panel -->
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy the current prompt or share a gentle note. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Prompt</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      // Gentle Share wiring for embed games
+      var statusEl = document.getElementById("embedShareStatus");
+      var copyPromptBtn = document.getElementById("sharePromptBtn");
+      var copyNoteBtn = document.getElementById("shareNoteBtn");
+      var responseEl = document.getElementById("embedResponse");
+      var clearBtn = document.getElementById("clearResponseBtn");
+
+      // Helper: find the main display/prompt element
+      function getPromptText() {
+        // Try common output/display element IDs
+        var ids = ["rqDisplay","wyrDisplay","totDisplay","emojiDisplay","display","question","prompt","soundDisplay","clueDisplay","qText"];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.textContent.trim()) {
+            var txt = el.textContent.trim();
+            // Skip placeholder texts
+            if (txt.indexOf("Click") === 0 || txt.indexOf("Loading") === 0 || txt === "Spin to get a question!") continue;
+            return txt;
+          }
+        }
+        // Try elements with class embed-output
+        var outputs = document.querySelectorAll(".embed-output");
+        for (var j = 0; j < outputs.length; j++) {
+          var ot = outputs[j].textContent.trim();
+          if (ot && ot.indexOf("Click") !== 0 && ot.indexOf("Loading") !== 0) return ot;
+        }
+        return "";
+      }
+
+      // Copy Prompt
+      if (copyPromptBtn) {
+        copyPromptBtn.addEventListener("click", function () {
+          var text = getPromptText();
+          if (!text) { if (statusEl) statusEl.textContent = "Generate a prompt first."; return; }
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(text, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Copy Gentle Share Note
+      if (copyNoteBtn) {
+        copyNoteBtn.addEventListener("click", function () {
+          var prompt = getPromptText();
+          var response = responseEl ? responseEl.value.trim() : "";
+          var title = document.title.replace(" — Game", "").replace(" — Free Online Icebreaker", "").trim();
+          var note = "I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n" + (prompt || "(a gentle moment)") + "\n";
+          if (response) { note += "\nMy pressure-free response:\n" + response + "\n"; }
+          note += "\nNot perfect. Just shared.\n\n" + window.location.href;
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(note, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Clear Response
+      if (clearBtn && responseEl) {
+        clearBtn.addEventListener("click", function () {
+          responseEl.value = "";
+          if (statusEl) statusEl.textContent = "Response cleared.";
+        });
+      }
+    })();
+  </script>
+  <script>
+    (function(){var s=document.getElementById("embedShareStatus"),pb=document.getElementById("sharePromptBtn"),nb=document.getElementById("shareNoteBtn");
+    if(pb)pb.addEventListener("click",function(){var c=document.getElementById("wordCloud");if(!c||!c.textContent.trim()){if(s)s.textContent="Add some words first.";return;}var words=c.textContent.trim();if(typeof copyToClipboard==="function")copyToClipboard(words,s);});
+    if(nb)nb.addEventListener("click",function(){var c=document.getElementById("wordCloud");var words=c?c.textContent.trim():"";var note="I collected words around a theme on Free Fun Icebreaker Games.\n\nWords: "+(words||"(none yet)")+"\n\nNot perfect. Just shared.";if(typeof copyToClipboard==="function")copyToClipboard(note,s);});})();
+  </script>
+</body></html>

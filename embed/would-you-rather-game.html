@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, follow">
+  <title>Would You Rather — Game</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/share.js"></script>
+</head>
+<body class="embed-game">
+  <h2>🤔 Would You Rather</h2>
+  <p class="embed-subtitle">Read the question aloud and have everyone pick a side. Great for sparking fun debates and revealing personalities.</p>
+
+  <div class="embed-output" id="wyrDisplay" style="font-size:1.25rem; font-weight:600;">
+    Click the button below to get started!
+  </div>
+
+  <div>
+    <button id="wyrNextBtn" class="embed-btn embed-btn-large">Next Question ➡️</button>
+  </div>
+  <div class="embed-feedback" id="wyrFeedback"></div>
+
+  <script>
+    (function () {
+      "use strict";
+      var questions = [
+        "Would you rather be able to fly or be invisible?",
+        "Would you rather live in the mountains or on the beach?",
+        "Would you rather have a rewind button or a pause button for your life?",
+        "Would you rather be able to talk to animals or speak every human language?",
+        "Would you rather always be 10 minutes late or always be 20 minutes early?",
+        "Would you rather have unlimited free time or unlimited money?",
+        "Would you rather be famous for your intelligence or your kindness?",
+        "Would you rather explore outer space or the deepest ocean?",
+        "Would you rather give up your phone or give up TV for a month?",
+        "Would you rather have a personal chef or a personal fitness trainer?",
+        "Would you rather live without music or live without movies?",
+        "Would you rather be the funniest person in the room or the smartest?",
+        "Would you rather travel back in time or travel to the future?",
+        "Would you rather have more hours in the day or more days in the week?",
+        "Would you rather be able to read minds or see the future?",
+        "Would you rather always have to sing instead of speak or dance instead of walk?",
+        "Would you rather work from a cozy cabin or a beachside villa?",
+        "Would you rather only be able to whisper or only be able to shout?",
+        "Would you rather have a dragon or a unicorn as a pet?",
+        "Would you rather eat pizza for every meal or never eat pizza again?"
+      ];
+
+      var display = document.getElementById("wyrDisplay");
+      var btn = document.getElementById("wyrNextBtn");
+      var feedback = document.getElementById("wyrFeedback");
+      var lastIdx = -1;
+      var count = 0;
+
+      btn.addEventListener("click", function () {
+        var idx;
+        if (questions.length === 1) {
+          idx = 0;
+        } else {
+          do {
+            idx = Math.floor(Math.random() * questions.length);
+          } while (idx === lastIdx);
+        }
+        lastIdx = idx;
+        count++;
+        display.textContent = questions[idx];
+        display.classList.add("output-active");
+        feedback.textContent = "Question #" + count + " — what do you choose?";
+      });
+    })();
+  </script>
+  <!-- Gentle Share Panel -->
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy the current question or share a gentle note. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Question</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+      // Gentle Share wiring for embed games
+      var statusEl = document.getElementById("embedShareStatus");
+      var copyPromptBtn = document.getElementById("sharePromptBtn");
+      var copyNoteBtn = document.getElementById("shareNoteBtn");
+      var responseEl = document.getElementById("embedResponse");
+      var clearBtn = document.getElementById("clearResponseBtn");
+
+      // Helper: find the main display/prompt element
+      function getPromptText() {
+        // Try common output/display element IDs
+        var ids = ["rqDisplay","wyrDisplay","totDisplay","emojiDisplay","display","question","prompt","soundDisplay","clueDisplay","qText"];
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.textContent.trim()) {
+            var txt = el.textContent.trim();
+            // Skip placeholder texts
+            if (txt.indexOf("Click") === 0 || txt.indexOf("Loading") === 0 || txt === "Spin to get a question!") continue;
+            return txt;
+          }
+        }
+        // Try elements with class embed-output
+        var outputs = document.querySelectorAll(".embed-output");
+        for (var j = 0; j < outputs.length; j++) {
+          var ot = outputs[j].textContent.trim();
+          if (ot && ot.indexOf("Click") !== 0 && ot.indexOf("Loading") !== 0) return ot;
+        }
+        return "";
+      }
+
+      // Copy Prompt
+      if (copyPromptBtn) {
+        copyPromptBtn.addEventListener("click", function () {
+          var text = getPromptText();
+          if (!text) { if (statusEl) statusEl.textContent = "Generate a prompt first."; return; }
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(text, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Copy Gentle Share Note
+      if (copyNoteBtn) {
+        copyNoteBtn.addEventListener("click", function () {
+          var prompt = getPromptText();
+          var response = responseEl ? responseEl.value.trim() : "";
+          var title = document.title.replace(" — Game", "").replace(" — Free Online Icebreaker", "").trim();
+          var note = "I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n" + (prompt || "(a gentle moment)") + "\n";
+          if (response) { note += "\nMy pressure-free response:\n" + response + "\n"; }
+          note += "\nNot perfect. Just shared.\n\n" + window.location.href;
+          if (typeof copyToClipboard === "function") {
+            copyToClipboard(note, statusEl);
+          } else if (statusEl) {
+            statusEl.textContent = "Copy function not available.";
+          }
+        });
+      }
+
+      // Clear Response
+      if (clearBtn && responseEl) {
+        clearBtn.addEventListener("click", function () {
+          responseEl.value = "";
+          if (statusEl) statusEl.textContent = "Response cleared.";
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
