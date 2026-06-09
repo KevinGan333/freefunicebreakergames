@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, follow"><title>Role and Superpower — Game</title><link rel="stylesheet" href="/assets/css/style.css"><script src="/assets/js/share.js"></script></head>
+<body class="embed-game">
+  <h2>🦸 Role and Superpower</h2><p class="embed-subtitle">Share your role and one practical strength you bring. No superhero talk needed.</p>
+  <div class="embed-input-group">
+    <label for="roleInput">Your Role</label>
+    <input type="text" id="roleInput" class="embed-input" placeholder="e.g., Product Designer" maxlength="100">
+    <label for="strengthInput">One Practical Strength</label>
+    <input type="text" id="strengthInput" class="embed-input" placeholder="e.g., I am good at organizing information" maxlength="100">
+  </div>
+  <div style="margin:1rem 0;">
+    <button id="generateBtn" class="embed-btn embed-btn-large">✨ Generate Intro</button>
+    <button id="clearBtn" class="embed-btn embed-btn-outline">Clear</button>
+  </div>
+  <div class="embed-output" id="output" style="display:none;"></div>
+  <div class="embed-feedback" id="statusMsg"></div>
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy your introduction. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Intro</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+  <script>(function(){"use strict";var role=document.getElementById("roleInput"),strength=document.getElementById("strengthInput"),output=document.getElementById("output"),status=document.getElementById("statusMsg");document.getElementById("generateBtn").addEventListener("click",function(){var r=role.value.trim(),s=strength.value.trim();if(!r&&!s){status.textContent="Fill in at least one field.";return;}var intro="I work on "+(r||"[role]")+". ";if(s)intro+="One way I can help is: "+s+".";else intro+="I am still discovering how I can best contribute.";output.textContent=intro;output.style.display="block";output.classList.add("output-active");status.textContent="Intro generated!";});document.getElementById("clearBtn").addEventListener("click",function(){role.value="";strength.value="";output.textContent="";output.style.display="none";output.classList.remove("output-active");status.textContent="";});var sel=document.getElementById("embedShareStatus"),pb=document.getElementById("sharePromptBtn"),nb=document.getElementById("shareNoteBtn");if(pb)pb.addEventListener("click",function(){var t=output.textContent.trim();if(!t){if(sel)sel.textContent="Generate an intro first.";return;}if(typeof copyToClipboard==="function")copyToClipboard(t,sel);});if(nb)nb.addEventListener("click",function(){var t=output.textContent.trim();if(!t){if(sel)sel.textContent="Generate an intro first.";return;}var note="I used a role introduction tool on Free Fun Icebreaker Games.\n\nMy intro: "+t+"\n\nNot perfect. Just shared.";if(typeof copyToClipboard==="function")copyToClipboard(note,sel);});})();</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, follow"><title>Buddy Match — Game</title><link rel="stylesheet" href="/assets/css/style.css"><script src="/assets/js/share.js"></script></head>
+<body class="embed-game">
+  <h2>🤝 Buddy Match</h2><p class="embed-subtitle">Enter names to create buddy pairs. Keep pairs private within your group.</p>
+  <div class="embed-input-group">
+    <label for="nameInput">Enter names (one per line)</label>
+    <textarea id="nameInput" class="gentle-share__textarea" rows="5" placeholder="Alex&#10;Jordan&#10;Taylor&#10;Morgan"></textarea>
+  </div>
+  <div style="margin:1rem 0;">
+    <button id="createBtn" class="embed-btn embed-btn-large">🤝 Create Buddy Pairs</button>
+    <button id="clearBtn" class="embed-btn embed-btn-outline">Clear</button>
+  </div>
+  <div class="embed-output" id="teamDisplay" style="display:none;"></div>
+  <div class="embed-feedback" id="statusMsg"></div>
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy buddy pairs to share privately. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Buddy Pairs</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Only share buddy pairs with people in the group.</p>
+  </div>
+  <script>(function(){"use strict";var input=document.getElementById("nameInput"),display=document.getElementById("teamDisplay"),status=document.getElementById("statusMsg");document.getElementById("createBtn").addEventListener("click",function(){var names=input.value.split("\n").filter(function(n){return n.trim();});if(names.length<2){status.textContent="Enter at least 2 names.";return;}names=names.sort(function(){return Math.random()-0.5;});var pairs=[],i;for(i=0;i<names.length-1;i+=2){pairs.push(names[i].trim()+" ↔ "+names[i+1].trim());}if(i<names.length){pairs[pairs.length-1]+=" + "+names[i].trim();}display.textContent="";display.style.display="block";var html="";pairs.forEach(function(p){html+=p+"\n";});display.textContent=html;display.classList.add("output-active");status.textContent=pairs.length+" pair(s) created.";});document.getElementById("clearBtn").addEventListener("click",function(){input.value="";display.textContent="";display.style.display="none";display.classList.remove("output-active");status.textContent="";});var sel=document.getElementById("embedShareStatus"),pb=document.getElementById("sharePromptBtn"),nb=document.getElementById("shareNoteBtn");if(pb)pb.addEventListener("click",function(){var t=display.textContent.trim();if(!t){if(sel)sel.textContent="Create buddy pairs first.";return;}if(typeof copyToClipboard==="function")copyToClipboard(t,sel);});if(nb)nb.addEventListener("click",function(){var t=display.textContent.trim();if(!t){if(sel)sel.textContent="Create buddy pairs first.";return;}var note="I created buddy pairs for onboarding on Free Fun Icebreaker Games.\n\nNot perfect. Just shared.";if(typeof copyToClipboard==="function")copyToClipboard(note,sel);});})();</script>
+</body>
+</html>

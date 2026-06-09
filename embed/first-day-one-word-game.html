@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, follow"><title>First Day One Word — Game</title><link rel="stylesheet" href="/assets/css/style.css"><script src="/assets/js/share.js"></script></head>
+<body class="embed-game">
+  <h2>💬 First Day One Word</h2><p class="embed-subtitle">Describe your first day in one word. No explanation needed.</p>
+  <div class="embed-output" id="promptArea" style="font-size:1.2rem;font-weight:600;">Choose one word for how your first day feels.</div>
+  <div class="embed-input-group">
+    <label for="wordInput">Your one word</label>
+    <input type="text" id="wordInput" class="embed-input" placeholder="Type your word here…" maxlength="50">
+  </div>
+  <div style="margin:0.5rem 0;">
+    <button id="shareWordBtn" class="embed-btn embed-btn-large">💬 Share My Word</button>
+    <button id="clearBtn" class="embed-btn embed-btn-outline">Clear</button>
+  </div>
+  <div class="embed-output" id="output" style="display:none;"></div>
+  <div class="embed-feedback" id="statusMsg">Your word is yours. Share it only if you want to.</div>
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy your word or a gentle note. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Prompt</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+  <script>(function(){"use strict";var word=document.getElementById("wordInput"),output=document.getElementById("output"),status=document.getElementById("statusMsg");document.getElementById("shareWordBtn").addEventListener("click",function(){var w=word.value.trim();if(!w){status.textContent="Type your word first.";return;}output.textContent="My first day feels: "+w;output.style.display="block";output.classList.add("output-active");status.textContent="Thank you for sharing.";});document.getElementById("clearBtn").addEventListener("click",function(){word.value="";output.textContent="";output.style.display="none";output.classList.remove("output-active");status.textContent="Your word is yours. Share it only if you want to.";});var sel=document.getElementById("embedShareStatus"),pb=document.getElementById("sharePromptBtn"),nb=document.getElementById("shareNoteBtn");if(pb)pb.addEventListener("click",function(){var t="Choose one word for how your first day feels.";if(typeof copyToClipboard==="function")copyToClipboard(t,sel);});if(nb)nb.addEventListener("click",function(){var w=word.value.trim();var note="I described my first day in one word on Free Fun Icebreaker Games.";if(w)note+="\n\nMy word: "+w;note+="\n\nNot perfect. Just shared.";if(typeof copyToClipboard==="function")copyToClipboard(note,sel);});})();</script>
+</body>
+</html>

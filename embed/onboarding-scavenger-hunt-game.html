@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, follow"><title>Onboarding Scavenger Hunt — Game</title><link rel="stylesheet" href="/assets/css/style.css"><script src="/assets/js/share.js"></script></head>
+<body class="embed-game">
+  <h2>🔎 Onboarding Scavenger Hunt</h2><p class="embed-subtitle">Discover tools, people, and resources at your own pace.</p>
+  <div class="embed-output" id="promptDisplay" style="font-size:1.2rem;font-weight:600;">Click "Next Prompt" to get started!</div>
+  <div style="margin:0.75rem 0;"><button id="nextBtn" class="embed-btn embed-btn-large">Next Prompt ➡️</button></div>
+  <div class="embed-feedback" id="feedback"></div>
+  <label for="embedResponse" class="sr-only">Your response (optional)</label>
+  <textarea id="embedResponse" class="gentle-share__textarea" placeholder="Your response (optional) — share only what feels comfortable." rows="2"></textarea>
+  <button id="clearResponseBtn" class="embed-btn embed-btn-outline" style="margin-top:0.25rem;">Clear My Response</button>
+  <div class="embed-share-panel">
+    <h3 class="embed-share-panel__title">Share your moment</h3>
+    <p class="embed-share-panel__desc">Copy the current prompt or share a gentle note. Nothing is saved or posted automatically.</p>
+    <div class="embed-share-panel__actions">
+      <button id="sharePromptBtn" class="embed-btn embed-btn-outline" type="button">📋 Copy Prompt</button>
+      <button id="shareNoteBtn" class="embed-btn embed-btn-outline" type="button">💬 Copy Gentle Share Note</button>
+    </div>
+    <div class="embed-share-panel__status" id="embedShareStatus" aria-live="polite"></div>
+    <p class="privacy-note">Nothing is saved. Nothing is posted automatically. Not perfect. Just shared.</p>
+  </div>
+  <script>(function(){"use strict";var prompts=[
+      "Find the team handbook or wiki",
+      "Find where meeting notes are stored",
+      "Find the support contact for IT questions",
+      "Find your team's main communication channel",
+      "Bookmark the HR portal or benefits page",
+      "Find one person you will work with regularly",
+      "Find the office supply area or ordering process",
+      "Find where to submit time-off requests"
+    ]; var display=document.getElementById("promptDisplay"),fb=document.getElementById("feedback"),lastIdx=-1,count=0;document.getElementById("nextBtn").addEventListener("click",function(){var idx;if(prompts.length===1)idx=0;else{do{idx=Math.floor(Math.random()*prompts.length);}while(idx===lastIdx);}lastIdx=idx;count++;display.textContent=prompts[idx];display.classList.add("output-active");fb.textContent="Prompt #"+count;});var clearBtn=document.getElementById("clearResponseBtn");if(clearBtn){clearBtn.addEventListener("click",function(){var r=document.getElementById("embedResponse");if(r){r.value="";}});}var sel=document.getElementById("embedShareStatus"),pb=document.getElementById("sharePromptBtn"),nb=document.getElementById("shareNoteBtn");if(pb)pb.addEventListener("click",function(){var t=display.textContent.trim();if(!t||t.indexOf("Click")===0){if(sel)sel.textContent="Generate a prompt first.";return;}if(typeof copyToClipboard==="function")copyToClipboard(t,sel);});if(nb)nb.addEventListener("click",function(){var prompt=display.textContent.trim();if(!prompt||prompt.indexOf("Click")===0)prompt="(a prompt)";var r=document.getElementById("embedResponse");var response=r?r.value.trim():"";var note="I tried a low-pressure icebreaker on Free Fun Icebreaker Games.\n\nPrompt:\n"+prompt+"\n";if(response)note+="\nMy pressure-free response:\n"+response+"\n";note+="\nNot perfect. Just shared.\n\n"+window.location.href;if(typeof copyToClipboard==="function")copyToClipboard(note,sel);});})();</script>
+</body>
+</html>

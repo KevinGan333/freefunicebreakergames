@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- Main Pages -->
@@ -18,6 +18,8 @@
   <url><loc>https://www.freefunicebreakergames.com/categories/team-building-games.html</loc><priority>0.8</priority></url>
   <url><loc>https://www.freefunicebreakergames.com/categories/party-icebreakers.html</loc><priority>0.8</priority></url>
   <url><loc>https://www.freefunicebreakergames.com/categories/remote-team-icebreakers.html</loc><priority>0.8</priority></url>
+
+    <url><loc>https://www.freefunicebreakergames.com/categories/new-hire-icebreakers.html</loc><priority>0.8</priority></url>
 
   <!-- Topic Pages -->
   <url><loc>https://www.freefunicebreakergames.com/topics/5-minute-icebreaker-games.html</loc><priority>0.7</priority></url>
@@ -59,4 +61,15 @@
   <url><loc>https://www.freefunicebreakergames.com/games/compliment-circle.html</loc><priority>0.9</priority></url>
   <url><loc>https://www.freefunicebreakergames.com/games/question-wheel.html</loc><priority>0.9</priority></url>
 
+    <url><loc>https://www.freefunicebreakergames.com/topics/new-hire-onboarding-icebreaker-games.html</loc><priority>0.7</priority></url>
+    <url><loc>https://www.freefunicebreakergames.com/games/hometown-map.html</loc><priority>0.9</priority></url>
+    <url><loc>https://www.freefunicebreakergames.com/games/new-hire-bingo.html</loc><priority>0.9</priority></url>
+    <url><loc>https://www.freefunicebreakergames.com/games/first-week-favorites.html</loc><priority>0.9</priority></url>
+    <url><loc>https://www.freefunicebreakergames.com/games/buddy-match.html</loc><priority>0.9</priority></url>
+    <url><loc>https://www.freefunicebreakergames.com/games/meet-the-team-quest.html</loc><priority>0.9</priority></url>
+    <url><loc>https://www.freefunicebreakergames.com/games/role-and-superpower.html</loc><priority>0.9</priority></url>
+    <url><loc>https://www.freefunicebreakergames.com/games/onboarding-scavenger-hunt.html</loc><priority>0.9</priority></url>
+    <url><loc>https://www.freefunicebreakergames.com/games/who-helped-you-today.html</loc><priority>0.9</priority></url>
+    <url><loc>https://www.freefunicebreakergames.com/games/new-hire-question-cards.html</loc><priority>0.9</priority></url>
+    <url><loc>https://www.freefunicebreakergames.com/games/first-day-one-word.html</loc><priority>0.9</priority></url>
 </urlset>
