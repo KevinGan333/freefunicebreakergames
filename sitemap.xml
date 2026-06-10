@@ -83,4 +83,11 @@
   <!-- Question Pages -->
   <url><loc>https://www.freefunicebreakergames.com/questions/new-hire-icebreaker-questions.html</loc><priority>0.8</priority></url>
 
+  <url><loc>https://www.freefunicebreakergames.com/topics/virtual-icebreaker-games.html</loc><priority>0.7</priority></url>
+  <url><loc>https://www.freefunicebreakergames.com/topics/remote-meeting-icebreakers.html</loc><priority>0.7</priority></url>
+  <url><loc>https://www.freefunicebreakergames.com/topics/zoom-icebreaker-games.html</loc><priority>0.7</priority></url>
+  <url><loc>https://www.freefunicebreakergames.com/topics/5-minute-virtual-icebreakers.html</loc><priority>0.7</priority></url>
+  <url><loc>https://www.freefunicebreakergames.com/questions/remote-team-icebreaker-questions.html</loc><priority>0.7</priority></url>
+  <url><loc>https://www.freefunicebreakergames.com/templates/15-minute-remote-meeting-warm-up.html</loc><priority>0.7</priority></url>
+  <url><loc>https://www.freefunicebreakergames.com/templates/30-minute-remote-team-connection-session.html</loc><priority>0.7</priority></url>
 </urlset>
