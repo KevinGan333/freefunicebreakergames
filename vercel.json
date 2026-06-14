@@ -27,15 +27,8 @@
     }
   ],
   "redirects": [
-    {
-      "source": "/topics/topics/first-day-of-class-icebreakers.html",
-      "destination": "/topics/first-day-of-class-icebreakers.html",
-      "permanent": true
-    },
-    {
-      "source": "/templates/questions/classroom-icebreaker-questions.html",
-      "destination": "/questions/classroom-icebreaker-questions.html",
-      "permanent": true
-    }
+    { "source": "/topics/topics/:path*", "destination": "/topics/:path*", "permanent": true },
+    { "source": "/templates/questions/:path*", "destination": "/questions/:path*", "permanent": true },
+    { "source": "/categories/games/:path*", "destination": "/games/:path*", "permanent": true }
   ]
 }
