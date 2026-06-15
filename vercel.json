@@ -1,4 +1,4 @@
-{
+﻿{
   "headers": [
     {
       "source": "/(.*)",
@@ -27,6 +27,7 @@
     }
   ],
   "redirects": [
+    { "source": "/blog/level-up-your-remote-workflow-with-icebreaker-games-for-meetings.html", "destination": "/blog/icebreaker-games-for-meetings.html", "permanent": true },
     { "source": "/topics/topics/:path*", "destination": "/topics/:path*", "permanent": true },
     { "source": "/templates/questions/:path*", "destination": "/questions/:path*", "permanent": true },
     { "source": "/categories/games/:path*", "destination": "/games/:path*", "permanent": true }
