@@ -564,7 +564,7 @@ var icebreakerGames = [
     url: "/games/first-day-one-word.html",
     embedUrl: "/embed/first-day-one-word-game.html",
     tags: ["first-day", "one-word", "onboarding", "check-in", "low-pressure"]
-  }
+  },
 
   {
     title: "Marshmallow Challenge",
