@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Shared games data for Free Fun Icebreaker Games.
  * Phase 1.3 — 30 games total.
  * Single source of truth for all game URLs and metadata.
@@ -564,5 +564,20 @@ var icebreakerGames = [
     url: "/games/first-day-one-word.html",
     embedUrl: "/embed/first-day-one-word-game.html",
     tags: ["first-day", "one-word", "onboarding", "check-in", "low-pressure"]
+  }
+
+  {
+    title: "Marshmallow Challenge",
+    slug: "marshmallow-challenge",
+    description: "Build the tallest free-standing tower using spaghetti, tape, string, and one marshmallow. A hands-on team-building activity that teaches collaboration and rapid prototyping.",
+    category: "Team Building",
+    bestFor: "Team Building, Workshops, Classrooms, Onboarding",
+    players: "4–6 per team",
+    time: "18–30 min",
+    format: "In-person / hybrid-friendly",
+    difficulty: "Medium",
+    url: "/games/marshmallow-challenge.html",
+    embedUrl: "",
+    tags: ["team-building", "collaboration", "design-thinking", "classroom", "onboarding", "workshop", "prototyping"]
   }
 ];
