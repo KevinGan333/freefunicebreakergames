@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Mood Check-In Icebreaker</title>
+  <desc id="desc">Free online game for teams with a visual mood check-in.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0f1b62"/><stop offset="0.62" stop-color="#3c267e"/><stop offset="1" stop-color="#7452bd"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#07113a" flood-opacity=".32"/></filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="138" cy="96" r="132" fill="#6e5ab4" opacity=".18"/><circle cx="488" cy="590" r="208" fill="#0c143f" opacity=".28"/>
+  <text x="76" y="250" fill="#fff" font-family="Arial, sans-serif" font-size="67" font-weight="700">Mood Check-In</text>
+  <text x="76" y="326" fill="#fff" font-family="Arial, sans-serif" font-size="67" font-weight="700">Icebreaker</text>
+  <text x="80" y="383" fill="#d9d7ff" font-family="Arial, sans-serif" font-size="29">Free Online Game for Teams</text>
+  <rect x="678" y="77" width="438" height="390" rx="30" fill="#19214b" filter="url(#shadow)"/>
+  <rect x="700" y="100" width="394" height="260" rx="18" fill="#f4e9df"/>
+  <g fill="#fff"><rect x="720" y="120" width="112" height="104" rx="12"/><rect x="846" y="120" width="112" height="104" rx="12"/><rect x="972" y="120" width="102" height="104" rx="12"/><rect x="720" y="240" width="112" height="100" rx="12"/><rect x="846" y="240" width="112" height="100" rx="12"/><rect x="972" y="240" width="102" height="100" rx="12"/></g>
+  <g fill="#f59d78"><circle cx="776" cy="163" r="23"/><circle cx="902" cy="163" r="23"/><circle cx="1023" cy="163" r="23"/><circle cx="776" cy="282" r="23"/><circle cx="902" cy="282" r="23"/><circle cx="1023" cy="282" r="23"/></g>
+  <g transform="translate(710 382)"><rect width="58" height="58" rx="12" fill="#fb8877"/><circle cx="29" cy="30" r="17" fill="#fff8d9"/><rect x="67" width="58" height="58" rx="12" fill="#f5bc62"/><circle cx="96" cy="30" r="17" fill="#fff8d9"/><rect x="134" width="58" height="58" rx="12" fill="#9fcbd0"/><circle cx="163" cy="30" r="17" fill="#fff8d9"/><rect x="201" width="58" height="58" rx="12" fill="#8075c7"/><circle cx="230" cy="30" r="17" fill="#fff8d9"/><rect x="268" width="58" height="58" rx="12" fill="#aa82c4"/><circle cx="297" cy="30" r="17" fill="#fff8d9"/><rect x="335" width="58" height="58" rx="12" fill="#7786b7"/><circle cx="364" cy="30" r="17" fill="#fff8d9"/></g>
+  <rect x="752" y="481" width="292" height="22" rx="11" fill="#ced2f8" opacity=".75"/>
+</svg>
