@@ -1,23 +1,66 @@
 {
   "redirects": [
-    { "source": "/blog/level-up-your-remote-workflow-with-icebreaker-games-for-meetings.html", "destination": "/blog/icebreaker-games-for-meetings.html", "permanent": true },
-    { "source": "/blog", "destination": "/blog/", "permanent": true },
-    { "source": "/topics/topics/:path*", "destination": "/topics/:path*", "permanent": true },
-    { "source": "/templates/questions/:path*", "destination": "/questions/:path*", "permanent": true },
-    { "source": "/categories/games/:path*", "destination": "/games/:path*", "permanent": true }
+    {
+      "source": "/mood-check-in.html",
+      "destination": "/games/mood-check-in.html",
+      "permanent": true
+    },
+    {
+      "source": "/blog/level-up-your-remote-workflow-with-icebreaker-games-for-meetings.html",
+      "destination": "/blog/icebreaker-games-for-meetings.html",
+      "permanent": true
+    },
+    {
+      "source": "/blog",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/topics/topics/:path*",
+      "destination": "/topics/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/templates/questions/:path*",
+      "destination": "/questions/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/categories/games/:path*",
+      "destination": "/games/:path*",
+      "permanent": true
+    }
   ],
   "rewrites": [
-    { "source": "/blog/", "destination": "/blog/index.html" }
+    {
+      "source": "/blog/",
+      "destination": "/blog/index.html"
+    }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=()" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self';" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=()"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self';"
+        }
       ]
     }
   ]
